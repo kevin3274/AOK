@@ -12,4 +12,15 @@
         </field>
     </record>
 
+    <record id="view_account_payment_term_form_inherit_aok" model="ir.ui.view">
+        <field name="name">account.payment.term.form.inherit.aok</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_payment_term_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="one_due_amount"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>
