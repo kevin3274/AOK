@@ -60,3 +60,26 @@ class AccountPaymentMode(models.Model):
     _inherit = "account.payment.mode"
 
     consider_payment_discount = fields.Boolean("Consider Payment Discount", default=True)
+
+
+class AccountPaymentLineDiscount(models.Model):
+    _name = 'account.payment.line.discount'
+    _description = 'Payment Line Discount'
+
+    payment_line_id = fields.Many2one("account.payment.line", string="Payment Line")
+    currency_id = fields.Many2one(
+        'res.currency', string='Currency of the Payment Transaction',
+        required=True,
+        default=lambda self: self.env.user.company_id.currency_id)
+    invoice_amount = fields.Monetary(string="Invoice Amount", currency_field='currency_id')
+    discount_due_date = fields.Date(string="Discount Due Date")
+    payment_discount_perc = fields.Float("Payment Discount %")
+    payment_discount = fields.Monetary(string="Payment Discount", currency_field='currency_id')
+    tax_id = fields.Many2one("account.tax", string="Tax")
+    account_id = fields.Many2one("account.account", string="Account")
+
+
+class AccountPaymentOrder(models.Model):
+    _inherit = 'account.payment.order'
+
+    consider_payment_discount = fields.Boolean(related="payment_mode_id.consider_payment_discount", string="Consider Payment Discount")

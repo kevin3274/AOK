@@ -34,4 +34,15 @@
         </field>
     </record>
 
+    <record id="view_account_payment_order_form_inherit_aok" model="ir.ui.view">
+        <field name="name">account.payment.order.form.inherit.aok</field>
+        <field name="model">account.payment.order</field>
+        <field name="inherit_id" ref="account_payment_order.account_payment_order_form"/>
+        <field name="arch" type="xml">
+            <field name="batch_booking" position="after">
+                <field name="consider_payment_discount"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>
