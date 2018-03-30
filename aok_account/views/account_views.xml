@@ -34,6 +34,22 @@
         </field>
     </record>
 
+    <record id="view_account_payment_line_discount_tree" model="ir.ui.view">
+        <field name="name">account.payment.line.discount.tree</field>
+        <field name="model">account.payment.line.discount</field>
+        <field name="arch" type="xml">
+            <tree string="Discount Lines">
+                <field name="payment_line_id"/>
+                <field name="invoice_amount"/>
+                <field name="discount_due_date"/>
+                <field name="payment_discount_perc"/>
+                <field name="payment_discount"/>
+                <field name="tax_id"/>
+                <field name="account_id"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="view_account_payment_order_form_inherit_aok" model="ir.ui.view">
         <field name="name">account.payment.order.form.inherit.aok</field>
         <field name="model">account.payment.order</field>
@@ -42,6 +58,38 @@
             <field name="batch_booking" position="after">
                 <field name="consider_payment_discount"/>
             </field>
+        </field>
+    </record>
+
+    <record id="view_account_payment_line_tree_inherit_aok" model="ir.ui.view">
+        <field name="name">account.payment.line.tree.inherit.aok</field>
+        <field name="model">account.payment.line</field>
+        <field name="inherit_id" ref="account_payment_order.account_payment_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="amount_currency" position="after">
+                <field name="payment_discount"/>
+                <field name="deduct_discount"/>
+                <field name="discount_due_date"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_payment_line_form_inherit_aok" model="ir.ui.view">
+        <field name="name">account.payment.line.form.inherit.aok</field>
+        <field name="model">account.payment.line</field>
+        <field name="inherit_id" ref="account_payment_order.account_payment_line_form"/>
+        <field name="arch" type="xml">
+            <field name="amount_currency" position="after">
+                <field name="payment_discount"/>
+                <field name="deduct_discount"/>
+                <field name="discount_due_date"/>
+            </field>
+            <group name="main" position="after">
+                <separator string="Discount Lines"/>
+                <div>
+                    <field name="payment_line_discount_ids"/>
+                </div>
+            </group>
         </field>
     </record>
 

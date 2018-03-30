@@ -83,3 +83,12 @@ class AccountPaymentOrder(models.Model):
     _inherit = 'account.payment.order'
 
     consider_payment_discount = fields.Boolean(related="payment_mode_id.consider_payment_discount", string="Consider Payment Discount")
+
+
+class AccountPaymentLine(models.Model):
+    _inherit = 'account.payment.line'
+
+    payment_line_discount_ids = fields.Many2many('account.payment.line.discount', string="Payment Order Line Discount")
+    payment_discount = fields.Monetary(string="Payment Discount", currency_field='currency_id')
+    deduct_discount = fields.Boolean("Deduct Discount")
+    discount_due_date = fields.Date(string="Discount Due Date")
