@@ -23,4 +23,15 @@
         </field>
     </record>
 
+    <record id="view_account_payment_mode_form_inherit_aok" model="ir.ui.view">
+        <field name="name">account.payment.mode.form.inherit.aok</field>
+        <field name="model">account.payment.mode</field>
+        <field name="inherit_id" ref="account_payment_mode.account_payment_mode_form"/>
+        <field name="arch" type="xml">
+            <field name="group_lines" position="after">
+                <field name="consider_payment_discount" attrs="{'invisible': [('payment_type','!=','outbound')]}"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>

@@ -54,3 +54,9 @@ class AccountPaymentTerm(models.Model):
         if self.one_due_amount:
             return [(result[-1][0], value)]
         return result
+
+
+class AccountPaymentMode(models.Model):
+    _inherit = "account.payment.mode"
+
+    consider_payment_discount = fields.Boolean("Consider Payment Discount", default=True)
