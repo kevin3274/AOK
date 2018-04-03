@@ -24,4 +24,41 @@
         </field>
     </record>
 
+    <record id="view_project_task_gantt" model="ir.ui.view">
+        <field name="name">project.task.gantt</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <gantt type="consolidate"
+                date_start="date_start"
+                date_stop="date_deadline"
+                fold_last_level="true"
+                round_dnd_dates="true"
+                consolidation="progress"
+                consolidation_max = '{"user_id": 100}'>
+            </gantt>
+        </field>
+    </record>
+
+    <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,gantt</field>
+    </record>
+
+    <record id="action_project_task_by_user" model="ir.actions.act_window">
+        <field name="name">Task by user</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">gantt,tree,form,pivot</field>
+        <field name="context">{'group_by': ['user_id', 'project_id'], 'search_default_group_by_user_id': 1,}</field>
+    </record>
+
+    <menuitem id="menu_project_task_gantt"
+        name="Gantt"
+        parent="project.menu_project_management"
+        sequence="25"/>
+
+    <menuitem id="menu_project_task_by_user"
+        name="By User"
+        parent="menu_project_task_gantt"
+        action="action_project_task_by_user"
+        sequence="1"/>
+
 </odoo>
