@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_supplierinfo_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.supplierinfo.form.view.inherit</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+        <field name="arch" type="xml">
+        	<label for="date_start" position="before">
+        		<field name="fix_cost_ids"/>
+        		<field name="variable_cost_ids"/>
+        	</label>
+        </field>
+    </record>
+
+    <record id="product.product_supplierinfo_type_action" model="ir.actions.act_window">
+        <field name="view_mode">tree,form,graph,pivot</field>
+    </record>
+
+    <record id="product_product_view_form_inherit_checklist" model="ir.ui.view">
+        <field name="name">product.product.view.form.inherit.checklist</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <page name='notes' position='after'>
+                <page name='attributes_checklist' string='Attributes Checklist'>
+                    <group>
+                        <button class="ml4 mt4 mb4" name="action_load_attribute_category" type="object" style="width: 200px !important;" icon="fa-files-o" string="Load attributes from category"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="checklist_category_id"/>
+                            <field name="checklist_ids"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="sustained"/>
+                            <field name="delivery_strategy"/>
+                        </group>
+                    </group>
+                </page>
+             </page>
+        </field>
+    </record>
+</odoo>
