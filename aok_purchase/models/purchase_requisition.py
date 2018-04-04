@@ -16,15 +16,16 @@ class PurchaseRequisitionLine(models.Model):
         for line in self:
             line.remaining_qty = line.product_qty - line.qty_ordered
 
+    name = fields.Char(related='requisition_id.name', string='Agreement Reference')
     remaining_qty = fields.Float(string='Remaining Qty', compute='_compute_remaining_qty')
     state = fields.Selection(related='requisition_id.state', string='Status')
-    vendor_id = fields.Many2one(related='requisition_id.vendor_id', string='Vendor')
+    vendor_id = fields.Many2one("res.partner", related='requisition_id.vendor_id', string='Vendor', store=True)
     order_count = fields.Integer(related='requisition_id.order_count', string='Number of Orders')
     description = fields.Text(related='requisition_id.description', string='Description')
     warehouse_id = fields.Many2one(related='requisition_id.warehouse_id', string='Warehouse')
     origin = fields.Char(related='requisition_id.origin', string='Source Document')
     type_id = fields.Many2one(related='requisition_id.type_id', string='Agreement Type')
-    name = fields.Char(related='requisition_id.name', string='Agreement Reference')
+    ordering_date = fields.Date(related='requisition_id.ordering_date', string='Ordering Date', store=True)
 
 
 class PurchaseRequisitionType(models.Model):
@@ -36,23 +37,20 @@ class PurchaseRequisitionType(models.Model):
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    def compute_remaining_qty(self):
-        purchase_requisition_lines = self.mapped('purchase_requisition_line_ids')
-        for line in purchase_requisition_lines:
-            if line.requisition_id and line.requisition_id.state == 'open' and line.requisition_id.type_id.show_remaining_quantity:
-                self.requisition_remaining_qty += line.remaining_qty
+    def _compute_remaining_qty(self):
+        RequisitionLine = self.env['purchase.requisition.line']
+        for product in self:
+            purchase_requisition_lines = RequisitionLine.search([('product_id', '=', product.id), ('state', '=', 'open')])
+            purchase_requisition_lines = purchase_requisition_lines.filtered(lambda x: x.type_id.show_remaining_quantity)
+            product.requisition_remaining_qty = sum(purchase_requisition_lines.mapped('remaining_qty'))
 
-    purchase_requisition_line_ids = fields.One2many('purchase.requisition.line', 'product_id', string='Purchase Requisition Line')
-    requisition_remaining_qty = fields.Integer(string='Remaining Quantity', compute='compute_remaining_qty')
+    requisition_remaining_qty = fields.Integer(string='Remaining Quantity', compute='_compute_remaining_qty')
 
     @api.multi
     def action_view_purchase_requisition_line(self):
+        self.ensure_one()
         action = self.env.ref('aok_purchase.action_purchase_requisition_line').read()[0]
-
-        purchase_requisition_lines = self.mapped('purchase_requisition_line_ids').filtered(lambda x: x.type_id.show_remaining_quantity)
-        if len(purchase_requisition_lines) > 1:
-            action['domain'] = [('id', 'in', purchase_requisition_lines.ids)]
-        elif purchase_requisition_lines:
-            action['domain'] = [('id', 'in', purchase_requisition_lines.ids), ('state', '=', 'open')]
-            action['res_id'] = purchase_requisition_lines.id
+        purchase_requisition_lines = self.env['purchase.requisition.line'].search([('product_id', '=', self.id), ('state', '=', 'open')])
+        purchase_requisition_lines = purchase_requisition_lines.filtered(lambda x: x.type_id.show_remaining_quantity)
+        action['domain'] = [('id', 'in', purchase_requisition_lines.ids)]
         return action
