@@ -43,35 +43,8 @@
         <field name="view_mode">kanban,tree,form,calendar,pivot,graph,gantt</field>
     </record>
 
-    <record id="action_project_task_by_user" model="ir.actions.act_window">
-        <field name="name">Task by user</field>
-        <field name="res_model">project.task</field>
-        <field name="view_mode">gantt,tree,form,pivot</field>
-        <field name="context">{'group_by': ['user_id', 'project_id'], 'search_default_group_by_user_id': 1,}</field>
+    <record id="project.action_view_task" model="ir.actions.act_window">
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,gantt</field>
     </record>
-
-    <record id="action_project_task_by_project" model="ir.actions.act_window">
-        <field name="name">Task by project</field>
-        <field name="res_model">project.task</field>
-        <field name="view_mode">gantt,tree,form,pivot</field>
-        <field name="context">{'group_by': ['project_id', 'user_id'], 'search_default_group_by_project_id': 1,}</field>
-    </record>
-
-    <menuitem id="menu_project_task_gantt"
-        name="Gantt"
-        parent="project.menu_project_management"
-        sequence="25"/>
-
-    <menuitem id="menu_project_task_by_user"
-        name="By User"
-        parent="menu_project_task_gantt"
-        action="action_project_task_by_user"
-        sequence="1"/>
-
-    <menuitem id="menu_project_task_by_project"
-        name="By Project"
-        parent="menu_project_task_gantt"
-        action="action_project_task_by_project"
-        sequence="2"/>
 
 </odoo>
