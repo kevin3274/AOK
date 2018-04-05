@@ -4,14 +4,16 @@ from odoo import api, fields, models
 
 class ProductSupplierinfoFixedCosts(models.Model):
     _name = 'product.supplierinfo.fixed.costs'
-
+    _rec_name = 'cost_category'
+    
     cost_category = fields.Char(string='Kostenkategorie', translate=True)
     amount = fields.Float(string='Betrag')
 
 
 class ProductSupplierinfoVariableCosts(models.Model):
     _name = 'product.supplierinfo.variable.costs'
-
+    _rec_name = 'cost_category'
+    
     cost_category = fields.Char(string='Kostenkategorie', translate=True)
     amount = fields.Float(string='Betrag')
 
@@ -19,16 +21,18 @@ class ProductSupplierinfoVariableCosts(models.Model):
 class SupplierInfo(models.Model):
     _inherit = "product.supplierinfo"
 
+    @api.depends('min_qty','fix_cost_ids','variable_cost_ids','fix_cost_ids.amount','variable_cost_ids.amount')
     def _total_uom_amount(self):
-    	self.total_price = self.price + sum(self.fix_cost_ids.amount) / self.min_qty + sum(self.variable_cost_ids.amount)
+        min_qty = self.min_qty and self.min_qty or 1
+        self.total_uom_amount =  self.price + (sum(self.fix_cost_ids.mapped('amount')) / min_qty) + sum(self.variable_cost_ids.mapped('amount'))
 
 
-    fix_cost_ids = fields.Many2many('product.supplierinfo.fixed.costs', string='Product Returns')
-    variable_cost_ids = fields.Many2many('product.supplierinfo.variable.costs', string='Initial Cost')
-    total_price = fields.Monetary(string="Gesamtpreis/ME", compute='_total_uom_amount')
+    fix_cost_ids = fields.Many2many('product.supplierinfo.fixed.costs', string='Fixed Cost')
+    variable_cost_ids = fields.Many2many('product.supplierinfo.variable.costs', string='Variable Cost')
+    total_uom_amount = fields.Monetary(string="Gesamtpreis/ME", compute='_total_uom_amount')
     sim_sales_price = fields.Float(string='Sim Sales Proce')
     margin_per = fields.Float(string='Margin (%)')
-    margin_eur = fields.Float(string='Margin (€)')
+    margin = fields.Float(string='Margin (€)')
 
 
 class ProductTemplate(models.Model):

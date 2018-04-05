@@ -9,6 +9,12 @@
         		<field name="fix_cost_ids"/>
         		<field name="variable_cost_ids"/>
         	</label>
+        	<field name="product_code" position="after">
+        		<field name="total_uom_amount"/>
+        		<field name="sim_sales_price"/>
+        		<field name="margin_per"/>
+        		<field name="margin"/>
+        	</field>
         </field>
     </record>
 
