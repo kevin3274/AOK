@@ -12,6 +12,7 @@ class PurchaseRequisition(models.Model):
 class PurchaseRequisitionLine(models.Model):
     _inherit = "purchase.requisition.line"
 
+    @api.depends('product_qty','qty_ordered')
     def _compute_remaining_qty(self):
         for line in self:
             line.remaining_qty = line.product_qty - line.qty_ordered
@@ -40,8 +41,7 @@ class ProductProduct(models.Model):
     def _compute_remaining_qty(self):
         RequisitionLine = self.env['purchase.requisition.line']
         for product in self:
-            purchase_requisition_lines = RequisitionLine.search([('product_id', '=', product.id), ('state', '=', 'open')])
-            purchase_requisition_lines = purchase_requisition_lines.filtered(lambda x: x.type_id.show_remaining_quantity)
+            purchase_requisition_lines = RequisitionLine.search([('product_id', '=', product.id), ('state', '=', 'open'),('type_id.show_remaining_quantity','=',True)])
             product.requisition_remaining_qty = sum(purchase_requisition_lines.mapped('remaining_qty'))
 
     requisition_remaining_qty = fields.Integer(string='Remaining Quantity', compute='_compute_remaining_qty')
@@ -50,7 +50,6 @@ class ProductProduct(models.Model):
     def action_view_purchase_requisition_line(self):
         self.ensure_one()
         action = self.env.ref('aok_purchase.action_purchase_requisition_line').read()[0]
-        purchase_requisition_lines = self.env['purchase.requisition.line'].search([('product_id', '=', self.id), ('state', '=', 'open')])
-        purchase_requisition_lines = purchase_requisition_lines.filtered(lambda x: x.type_id.show_remaining_quantity)
+        purchase_requisition_lines = self.env['purchase.requisition.line'].search([('product_id', '=', self.id), ('state', '=', 'open'),('type_id.show_remaining_quantity','=',True)])
         action['domain'] = [('id', 'in', purchase_requisition_lines.ids)]
         return action
