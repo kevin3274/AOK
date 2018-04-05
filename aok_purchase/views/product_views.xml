@@ -30,13 +30,15 @@
                         <group>
                             <field name="checklist_category_id"/>
                             <field name="checklist_ids"/>
-                            <field name="description"/>
                         </group>
                         <group>
                             <field name="sustained"/>
                             <field name="delivery_strategy"/>
                         </group>
                     </group>
+                    <group colspan="4">
+                    	<field name="description"/>
+                   	</group>
                 </page>
              </page>
         </field>
