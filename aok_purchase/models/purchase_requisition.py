@@ -18,7 +18,7 @@ class PurchaseRequisitionLine(models.Model):
             line.remaining_qty = line.product_qty - line.qty_ordered
 
     name = fields.Char(related='requisition_id.name', string='Agreement Reference')
-    remaining_qty = fields.Float(string='Remaining Qty', compute='_compute_remaining_qty')
+    remaining_qty = fields.Float(string='Remaining Qty', compute='_compute_remaining_qty', store=True)
     state = fields.Selection(related='requisition_id.state', string='Status')
     vendor_id = fields.Many2one("res.partner", related='requisition_id.vendor_id', string='Vendor', store=True)
     order_count = fields.Integer(related='requisition_id.order_count', string='Number of Orders')
@@ -27,6 +27,19 @@ class PurchaseRequisitionLine(models.Model):
     origin = fields.Char(related='requisition_id.origin', string='Source Document')
     type_id = fields.Many2one(related='requisition_id.type_id', string='Agreement Type')
     ordering_date = fields.Date(related='requisition_id.ordering_date', string='Ordering Date', store=True)
+    qty_ordered = fields.Float(compute='_compute_ordered_qty', string='Ordered Quantities', store=True)
+
+    @api.depends('requisition_id.purchase_ids.state')
+    def _compute_ordered_qty(self):
+        for line in self:
+            total = 0.0
+            for po in line.requisition_id.purchase_ids.filtered(lambda purchase_order: purchase_order.state in ['purchase', 'done']):
+                for po_line in po.order_line.filtered(lambda order_line: order_line.product_id == line.product_id):
+                    if po_line.product_uom != line.product_uom_id:
+                        total += po_line.product_uom._compute_quantity(po_line.product_qty, line.product_uom_id)
+                    else:
+                        total += po_line.product_qty
+            line.qty_ordered = total
 
 
 class PurchaseRequisitionType(models.Model):
