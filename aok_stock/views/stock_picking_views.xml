@@ -30,6 +30,7 @@
                 <field name="kommissionierhinweis"/>
                 <field name="weight"/>
                 <field name="carrier_id"/>
+                <field name="number_of_packages"/>
             </field>
         </field>
     </record>
