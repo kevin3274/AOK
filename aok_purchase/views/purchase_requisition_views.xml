@@ -96,6 +96,22 @@
         parent="purchase.menu_procurement_management"
         action="action_purchase_requisition_line"/>
 
+    <record id="action_purchase_requisition_line_report" model="ir.actions.act_window">
+        <field name="name">Purchase Agreement Analysis</field>
+        <field name="res_model">purchase.requisition.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">pivot,graph</field>
+    </record>
+
+    <menuitem id="purchase.purchase_report" name="Reporting" parent="purchase.menu_purchase_root" sequence="99"
+        groups="purchase.group_purchase_manager"/>
+
+    <menuitem id="menu_purchase_report" name="Purchase Analysis" parent="purchase.purchase_report" sequence="1"
+        groups="purchase.group_purchase_manager" action="purchase.action_purchase_order_report_all"/>
+
+    <menuitem id="menu_purchase_requisition_line_report" name="Purchase Agreement Analysis" parent="purchase.purchase_report" sequence="2"
+        groups="purchase.group_purchase_manager" action="action_purchase_requisition_line_report"/>
+
     <record id="product_form_view_purchase_requisition_button" model="ir.ui.view">
         <field name="name">product.product.purchase.requisition</field>
         <field name="model">product.product</field>

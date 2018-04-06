@@ -5,7 +5,7 @@ from odoo import api, fields, models
 class ProductSupplierinfoFixedCosts(models.Model):
     _name = 'product.supplierinfo.fixed.costs'
     _rec_name = 'cost_category'
-    
+
     cost_category = fields.Char(string='Kostenkategorie', translate=True)
     amount = fields.Float(string='Betrag')
 
@@ -13,7 +13,7 @@ class ProductSupplierinfoFixedCosts(models.Model):
 class ProductSupplierinfoVariableCosts(models.Model):
     _name = 'product.supplierinfo.variable.costs'
     _rec_name = 'cost_category'
-    
+
     cost_category = fields.Char(string='Kostenkategorie', translate=True)
     amount = fields.Float(string='Betrag')
 
@@ -30,7 +30,7 @@ class SupplierInfo(models.Model):
     fix_cost_ids = fields.Many2many('product.supplierinfo.fixed.costs', string='Fixed Cost')
     variable_cost_ids = fields.Many2many('product.supplierinfo.variable.costs', string='Variable Cost')
     total_uom_amount = fields.Monetary(string="Gesamtpreis/ME", compute='_total_uom_amount')
-    sim_sales_price = fields.Float(string='Sim Sales Proce')
+    sim_sales_price = fields.Float(string='Sim Sales Price')
     margin_per = fields.Float(string='Margin (%)')
     margin = fields.Float(string='Margin (€)')
 
