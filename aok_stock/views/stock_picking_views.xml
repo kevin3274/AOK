@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_picking_form_inherit_aok" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.aok</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="kommissionierhinweis"/>
+                <field name="sale_id" readonly="1"/>
+                <field name="purchase_id" readonly="1"/>
+            </field>
+            <page name="extra" position="after">
+                <page name="quality" string="Quality" attrs="{'invisible': [('picking_type_code', '!=', 'incoming')]}">
+                </page>
+            </page>
+            <xpath expr="//field[@name='move_line_ids']//tree/field[@name='state']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="vpicktree_inherit_stock_picking_batch" model="ir.ui.view">
+        <field name="name">stock.picking.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="kommissionierhinweis"/>
+                <field name="weight"/>
+                <field name="carrier_id"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

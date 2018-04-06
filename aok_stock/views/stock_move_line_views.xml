@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_line_tree_inherit_aok" model="ir.ui.view">
+        <field name="name">stock.move.line.tree.inherit.aok</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="location_dest_id" position="after">
+                <field name="dangerous_goods_number"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_move_line_form_inherit_aok" model="ir.ui.view">
+        <field name="name">stock.move.line.form.inherit.aok</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_form"/>
+        <field name="arch" type="xml">
+            <field name="lot_id" position="before">
+                <field name="dangerous_goods_number"/>
+            </field>
+        </field>
+    </record>
+</odoo>
