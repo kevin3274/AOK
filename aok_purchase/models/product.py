@@ -37,7 +37,8 @@ class SupplierInfo(models.Model):
     @api.depends('sim_sales_price', 'total_uom_amount')
     def _compute_margin(self):
         for record in self:
-            record.margin_per = ((record.sim_sales_price - record.total_uom_amount) / record.sim_sales_price or 1.0) * 100
+            sim_sale_price = record.sim_sales_price or 1.0
+            record.margin_per = ((record.sim_sales_price - record.total_uom_amount) / sim_sale_price) * 100
             record.margin = record.sim_sales_price - record.total_uom_amount
 
 
