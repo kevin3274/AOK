@@ -11,6 +11,9 @@
                 <field name="sale_id" readonly="1"/>
                 <field name="purchase_id" readonly="1"/>
             </field>
+            <field name="location_id" position="after">
+                <field name="picking_nok" attrs="{'invisible': [('picking_type_code', '!=', 'incoming')]}"/>
+            </field>
             <page name="extra" position="after">
                 <page name="quality" string="Quality" attrs="{'invisible': [('picking_type_code', '!=', 'incoming')]}">
                     <group>

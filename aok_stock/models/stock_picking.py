@@ -27,7 +27,18 @@ class StockPicking(models.Model):
     qc_packaging = fields.Char("Verpackung")
     qc_functional_test = fields.Char("Funktionstest")
 
-    picking_nok = fields.Boolean()
+    picking_nok = fields.Boolean(string="Picking NOK", compute="_compute_picking_nok")
+
+    @api.depends('qc_overpacked', 'qc_unpaletted', 'qc_false_uom', 'qc_mixed_quality', 'qc_no_do',
+        'qc_higher_140', 'qc_oversized', 'qc_unlabeled', 'qc_false_label', 'qc_no_reference', 'qc_note',
+        'qc_time', 'qc_processing', 'qc_print', 'qc_packaging', 'qc_functional_test')
+    def _compute_picking_nok(self):
+        for picking in self:
+            if picking.qc_overpacked or picking.qc_unpaletted or picking.qc_false_uom or picking.qc_mixed_quality or picking.qc_no_do or\
+               picking.qc_higher_140 or picking.qc_oversized or picking.qc_unlabeled or picking.qc_false_label or picking.qc_no_reference or\
+               picking.qc_note or picking.qc_time or picking.qc_processing or picking.qc_print or picking.qc_packaging or picking.qc_functional_test:
+
+                picking.picking_nok = True
 
     @api.model
     def create(self, vals):
