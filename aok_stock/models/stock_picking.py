@@ -6,14 +6,14 @@ from odoo import api, fields, models
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
-    kommissionierhinweis = fields.Char(string='Kommissionierhinweis')
+    picking_note = fields.Char(string='Kommissionierhinweis')
 
     @api.model
     def create(self, vals):
         res = super(StockPicking, self).create(vals)
         order = self.env['sale.order'].search([('name', '=', res.origin)])
         if order:
-            res.kommissionierhinweis = order.kommissionierhinweis
+            res.picking_note = order.picking_note
         return res
 
 

@@ -6,4 +6,4 @@ from odoo import fields, models
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    kommissionierhinweis = fields.Char(string='Kommissionierhinweis')
+    picking_note = fields.Char(string='Kommissionierhinweis')
