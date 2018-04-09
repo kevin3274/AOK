@@ -51,4 +51,38 @@
         </field>
     </record>
 
+    <record id="view_product_supplierinfo_tree_inherit_aok" model="ir.ui.view">
+        <field name="name">product.supplierinfo.tree.inherit.aok</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="arch" type="xml">
+            <tree string="Vendor Information" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="product_id" invisible="context.get('product_template_invisible_variant', False)" groups="product.group_product_variant"/>
+                <field name="product_tmpl_id" string="Product" invisible="context.get('visible_product_tmpl_id', True)"/>
+                <field name="min_qty"/>
+                <field name="price" string="Price"/>
+                <field name="sim_sales_price"/>
+                <field name="margin_per"/>
+                <field name="margin"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_product_supplierinfo_aok" model="ir.actions.act_window">
+        <field name="name">Kalkulator</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.supplierinfo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_product_supplierinfo_tree_inherit_aok"/>
+        <field name="context">{'visible_product_tmpl_id':False}</field>
+    </record>
+
+    <menuitem
+       action="action_product_supplierinfo_aok" id="menu_product_pricelist_aok"
+       parent="purchase.menu_procurement_management" sequence="18" groups="purchase.group_manage_vendor_price"/>
+
 </odoo>
