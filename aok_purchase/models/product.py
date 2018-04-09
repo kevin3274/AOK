@@ -23,9 +23,9 @@ class SupplierInfo(models.Model):
 
     @api.depends('min_qty','fix_cost_ids','variable_cost_ids','fix_cost_ids.amount','variable_cost_ids.amount')
     def _total_uom_amount(self):
-        min_qty = self.min_qty and self.min_qty or 1
-        self.total_uom_amount =  self.price + (sum(self.fix_cost_ids.mapped('amount')) / min_qty) + sum(self.variable_cost_ids.mapped('amount'))
-
+        for record in self:
+            min_qty = record.min_qty or 1.0
+            record.total_uom_amount =  record.price + (sum(record.fix_cost_ids.mapped('amount')) / min_qty) + sum(record.variable_cost_ids.mapped('amount'))
 
     fix_cost_ids = fields.Many2many('product.supplierinfo.fixed.costs', string='Fixed Cost')
     variable_cost_ids = fields.Many2many('product.supplierinfo.variable.costs', string='Variable Cost')
