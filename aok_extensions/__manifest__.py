@@ -16,7 +16,7 @@
     'version': "0.1",
     'author': 'Modoolar',
     'website': 'https://www.modoolar.com',
-    'depends': ['sale_management', 'purchase'],
+    'depends': ['sale_management', 'purchase', 'stock'],
     'description': """
     This is my first module created for odoo SH
 """,
@@ -26,7 +26,8 @@
         'views/product_template_view.xml',
         'views/product_documents_view.xml',
         'views/res_partner_view.xml',
-        'views/sale_order_view.xml'
+        'views/sale_order_view.xml',
+        'views/stock_warehouse_view.xml'
     ],
     'demo': [
     ],

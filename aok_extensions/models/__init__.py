@@ -15,3 +15,5 @@ from . import product_documents
 from . import sale_report
 from . import res_partner
 from . import sale_order
+from . import stock_warehouse
+

@@ -52,3 +52,11 @@ class SaleOrder(models.Model):
         string='Contact person'
     )
 
+
+class AccountInvoice(models.Model):
+    _inherit = 'account.invoice'
+
+    contact_person = fields.Char(
+        string='Contact person'
+    )
+

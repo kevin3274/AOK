@@ -102,4 +102,15 @@
         </field>
     </record>
 
+    <record id="account_invoice_form_inherit_aok" model="ir.ui.view">
+        <field name="name">account.invoice.form.inherit.aok</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <field name="payment_term_id" position="before">
+                <field name="contact_person" />
+            </field>
+        </field>
+    </record>
+
 </odoo>

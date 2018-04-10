@@ -37,7 +37,8 @@ class ProductTemplate(models.Model):
         inverse_name='res_id',
         domain=[
             ('res_model', '=', _inherit),
-            ('type', '=', 'binary')
+            ('type', '=', 'binary'),
+            ('external_type', '=', False),
         ],
         string='Attachment'
     )
@@ -47,7 +48,8 @@ class ProductTemplate(models.Model):
         inverse_name='res_id',
         domain=[
             ('res_model', '=', _inherit),
-            ('type', '=', 'url')
+            ('type', '=', 'url'),
+            ('external_type', '=', False),
         ],
         string='Attachment'
     )
