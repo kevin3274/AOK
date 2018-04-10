@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+##############################################################################
+#
+# Copyright (c) 2018 - NOW Modoolar (http://modoolar.com) All Rights Reserved.
+#
+# WARNING: This program as such is intended to be used by professional
+# programmers who take the whole responsibility of assessing all potential
+# consequences resulting from its eventual inadequacies and bugs
+# End users who are looking for a ready-to-use solution with commercial
+# guarantees and support are strongly advised to contract support@modoolar.com
+#
+##############################################################################
+-->
+<odoo>
+
+    <record id="res_partner_view_form_inherit_aok" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherit.aok</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="send_list"/>
+                <field name="no_magazines"/>
+            </field>
+
+            <field name="category_id" position="after">
+                <field name="crm_lead" attrs="{'invisible': [('customer', '=', False)]}"/>
+            </field>
+
+            <notebook position="inside">
+                <page string="Encasing" attrs="{'invisible': [('customer', '=', False)]}">
+                    <group>
+                        <group>
+                            <field name="enc_name" />
+                            <field name="enc_lastname" />
+                            <field name="enc_date" />
+                            <field name="enc_insurance_number" />
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+
+        </field>
+    </record>
+
+
+    <record id="view_res_partner_filter_inherit_aok" model="ir.ui.view">
+        <field name="name">res.partner.select.inherit.aok</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <separator/>
+                <filter name="active_send_list" string="Send list(active)" domain="[('send_list', '=', True)]"/>
+                <filter name="inactive_send_list" string="Send list(inactive)" domain="[('send_list','=', False)]"/>
+            </filter>
+        </field>
+    </record>
+
+</odoo>
