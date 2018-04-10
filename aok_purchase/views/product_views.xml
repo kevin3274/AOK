@@ -12,15 +12,11 @@
             </label>
             <field name="product_code" position="after">
                 <field name="total_uom_amount"/>
-                <field name="sim_sales_price"/>
+                <!-- <field name="sim_sales_price"/>
                 <field name="margin_per"/>
-                <field name="margin"/>
+                <field name="margin"/> -->
             </field>
         </field>
-    </record>
-
-    <record id="product.product_supplierinfo_type_action" model="ir.actions.act_window">
-        <field name="view_mode">tree,form,graph,pivot</field>
     </record>
 
     <record id="product_product_view_form_inherit_checklist" model="ir.ui.view">
@@ -77,7 +73,7 @@
         <field name="res_model">product.supplierinfo</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_product_supplierinfo_tree_inherit_aok"/>
+        <field name="view_id" ref="aok_purchase.view_product_supplierinfo_tree_inherit_aok"/>
         <field name="context">{'visible_product_tmpl_id':False}</field>
     </record>
 
@@ -85,4 +81,9 @@
        action="action_product_supplierinfo_aok" id="menu_product_pricelist_aok"
        parent="purchase.menu_procurement_management" sequence="18" groups="purchase.group_manage_vendor_price"/>
 
+	<record id="product.product_supplierinfo_type_action" model="ir.actions.act_window">
+		<field name="view_id" ref="product.product_supplierinfo_tree_view"/>
+        <field name="view_mode">tree,form,graph,pivot</field>
+    </record>
+    
 </odoo>
