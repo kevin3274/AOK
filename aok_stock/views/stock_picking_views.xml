@@ -7,6 +7,7 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
             <field name="origin" position="after">
+            	<field name="picker_id" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
                 <field name="picking_note"/>
                 <field name="sale_id" readonly="1"/>
                 <field name="purchase_id" readonly="1"/>
@@ -69,6 +70,18 @@
                 <field name="carrier_id"/>
                 <field name="number_of_packages"/>
             </field>
+        </field>
+    </record>
+    
+    <record id="view_picking_internal_search_inherit_aok" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search.inherit.aok</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <filter name="late" position="before">
+                <filter name="picker_id" string="Assigned to me" domain="[('picker_id', '=', uid)]"/>
+                <separator/>
+            </filter>
         </field>
     </record>
 

@@ -28,6 +28,7 @@ class StockPicking(models.Model):
     qc_functional_test = fields.Char("Funktionstest")
 
     picking_nok = fields.Boolean(string="Picking NOK", compute="_compute_picking_nok", store=True)
+    picker_id = fields.Many2one('res.users', string="Picker")
 
     @api.depends('qc_overpacked', 'qc_unpaletted', 'qc_false_uom', 'qc_mixed_quality', 'qc_no_do',
         'qc_higher_140', 'qc_oversized', 'qc_unlabeled', 'qc_false_label', 'qc_no_reference', 'qc_note',
