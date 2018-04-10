@@ -61,7 +61,6 @@ class ProductTemplate(models.Model):
         inverse_name='res_id',
         domain=[
             ('res_model', '=', _inherit),
-            ('type', '=', 'url'),
             ('external_type', '=', 'image'),
         ],
         string='Shop Photos'
@@ -72,7 +71,6 @@ class ProductTemplate(models.Model):
         inverse_name='res_id',
         domain=[
             ('res_model', '=', _inherit),
-            ('type', '=', 'url'),
             ('external_type', '=', 'video'),
         ],
         string='Shop Videos'
@@ -83,7 +81,6 @@ class ProductTemplate(models.Model):
         inverse_name='res_id',
         domain=[
             ('res_model', '=', _inherit),
-            ('type', '=', 'url'),
             ('external_type', '=', 'document'),
         ],
         string='Shop Documents'
