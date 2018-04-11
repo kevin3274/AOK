@@ -14,6 +14,7 @@
         'views/purchase_requisition_views.xml',
         'views/product_views.xml',
         'views/product_attribute_views.xml',
+        'report/report_purchaserequisition.xml',
     ],
     'test': [
     ],
