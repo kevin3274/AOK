@@ -7,8 +7,18 @@
         <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
         <field name="arch" type="xml">
             <label for="date_start" position="before">
-                <field name="fix_cost_ids"/>
-                <field name="variable_cost_ids"/>
+                <field name="fix_cost_ids">
+                    <tree string="Fixed Cost" editable="bottom">
+                        <field name="cost_category"/>
+                        <field name="amount"/>
+                    </tree>
+                </field>
+                <field name="variable_cost_ids">
+                    <tree string="Variable Cost" editable="bottom">
+                        <field name="cost_category"/>
+                        <field name="amount"/>
+                    </tree>
+                </field>
             </label>
             <field name="product_code" position="after">
                 <field name="total_uom_amount"/>
