@@ -11,6 +11,7 @@
                 <field name="posx"/>
                 <field name="posy"/>
                 <field name="posz"/>
+                <field name="height"/>
                 <field name="partner_id"/>
             </field>
         </field>

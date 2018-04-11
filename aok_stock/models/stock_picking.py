@@ -29,6 +29,11 @@ class StockPicking(models.Model):
 
     picking_nok = fields.Boolean(string="Picking NOK", compute="_compute_picking_nok", store=True)
     picker_id = fields.Many2one('res.users', string="Picker")
+    package_count = fields.Integer(compute="_compute_package_count", string="Package Count")
+
+    def _compute_package_count(self):
+        for picking in self:
+            picking.package_count = len(picking.package_ids)
 
     @api.depends('qc_overpacked', 'qc_unpaletted', 'qc_false_uom', 'qc_mixed_quality', 'qc_no_do',
         'qc_higher_140', 'qc_oversized', 'qc_unlabeled', 'qc_false_label', 'qc_no_reference', 'qc_note',
@@ -57,3 +62,8 @@ class StockPickingRoute(models.Model):
     location_id = fields.Many2one('stock.location', string='Location')
     sequence = fields.Integer(required=True, default=10)
 
+
+class Location(models.Model):
+    _inherit = "stock.location"
+
+    height = fields.Float("Height")

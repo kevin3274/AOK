@@ -68,7 +68,7 @@
                 <field name="picking_note"/>
                 <field name="weight"/>
                 <field name="carrier_id"/>
-                <field name="number_of_packages"/>
+                <field name="package_count"/>
             </field>
         </field>
     </record>
