@@ -8,6 +8,7 @@ class ProductSupplierinfoFixedCosts(models.Model):
 
     cost_category = fields.Char(string='Kostenkategorie', translate=True)
     amount = fields.Float(string='Betrag')
+    supplier_id = fields.Many2one("product.supplierinfo", string="Supplier")
 
 
 class ProductSupplierinfoVariableCosts(models.Model):
@@ -16,6 +17,7 @@ class ProductSupplierinfoVariableCosts(models.Model):
 
     cost_category = fields.Char(string='Kostenkategorie', translate=True)
     amount = fields.Float(string='Betrag')
+    supplier_id = fields.Many2one("product.supplierinfo", string="Supplier")
 
 
 class SupplierInfo(models.Model):
@@ -27,8 +29,8 @@ class SupplierInfo(models.Model):
             min_qty = record.min_qty or 1.0
             record.total_uom_amount =  record.price + (sum(record.fix_cost_ids.mapped('amount')) / min_qty) + sum(record.variable_cost_ids.mapped('amount'))
 
-    fix_cost_ids = fields.Many2many('product.supplierinfo.fixed.costs', string='Fixed Cost')
-    variable_cost_ids = fields.Many2many('product.supplierinfo.variable.costs', string='Variable Cost')
+    fix_cost_ids = fields.One2many('product.supplierinfo.fixed.costs', 'supplier_id', string='Fixed Cost', copy=True)
+    variable_cost_ids = fields.One2many('product.supplierinfo.variable.costs', 'supplier_id', string='Variable Cost', copy=True)
     total_uom_amount = fields.Monetary(string="Gesamtpreis/ME", compute='_total_uom_amount')
     sim_sales_price = fields.Float(string='Sim Sales Price')
     margin_per = fields.Float(string='Margin (%)', compute="_compute_margin", store=True)
