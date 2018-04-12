@@ -42,7 +42,12 @@
                     <group>
                         <group>
                             <field name="checklist_category_id"/>
-                            <field name="checklist_ids"/>
+                            <field name="checklist_ids">
+                                <tree string="Checklist Attributes" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="value"/>
+                                </tree>
+                            </field>
                         </group>
                         <group>
                             <field name="sustained"/>

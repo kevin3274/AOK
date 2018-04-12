@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-	
+
+    <record id="attribute_checklist_category_form_view" model="ir.ui.view">
+        <field name="name">attribute.checklist.category.form.view</field>
+        <field name="model">attributes.checklist.category</field>
+        <field name="arch" type="xml">
+            <form string="Attribute Checklist Category">
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="attribute_ids">
+                            <tree string="Attributes" editable="bottom">
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
     <record id="attribute_checklist_category_list_view" model="ir.ui.view">
         <field name="name">attribute.checklist.category.list</field>
         <field name="model">attributes.checklist.category</field>
@@ -26,37 +45,6 @@
         name="Attribute Checklist"
         parent="purchase.menu_purchase_config" sequence="50"/>
 
-    <record id="attribute_checklist_category_form_view" model="ir.ui.view">
-        <field name="name">attribute.checklist.category.form.view</field>
-        <field name="model">attributes.checklist.category</field>
-        <field name="arch" type="xml">
-            <form string="Attribute Checklist Category">
-                <group>
-                	<group>
-                        <field name="name"/>
-                        <field name="attribute_ids">
-	                        <tree string="Attributes" editable="bottom">
-	                        	<field name="name"/>
-	                        	<field name="value"/>
-	                        </tree>
-                        </field>
-                    </group>
-                </group>
-            </form>
-        </field>
-    </record>
-
-    <record id="attribute_checklist_list_view" model="ir.ui.view">
-        <field name="name">attribute.checklist.list</field>
-        <field name="model">attributes.checklist.category</field>
-        <field name="priority">1</field>
-        <field name="arch" type="xml">
-            <tree string="Attributes Checklist">
-                <field name="name"/>
-            </tree>
-        </field>
-    </record>
-
     <record id="attribute_checklist_form_view" model="ir.ui.view">
         <field name="name">attribute.checklist.form.view</field>
         <field name="model">attributes.checklist</field>
@@ -64,19 +52,17 @@
             <form string="Attribute Checklist">
                 <group>
                     <field name="name"/>
-                    <field name="value"/>
                 </group>
             </form>
         </field>
     </record>
-    
+
     <record id="attribute_checklist_tree_view" model="ir.ui.view">
         <field name="name">attribute.checklist.tree.view</field>
         <field name="model">attributes.checklist</field>
         <field name="arch" type="xml">
             <tree string="Attribute Checklist">
              	<field name="name"/>
-             	<field name="value"/>
             </tree>
         </field>
     </record>

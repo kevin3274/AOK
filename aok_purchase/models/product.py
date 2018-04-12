@@ -54,7 +54,7 @@ class ProductProduct(models.Model):
     _inherit = "product.product"
 
     checklist_category_id = fields.Many2one('attributes.checklist.category', string='Checklist Category')
-    checklist_ids = fields.Many2many('attributes.checklist', string='Checklist Attribute')
+    checklist_ids = fields.One2many('product.attributes.checklist', 'product_id', string='Checklist Attribute', copy=True)
     description = fields.Html(string='Additional Information')
     sustained = fields.Boolean(string='Nachhaltig')
     delivery_strategy = fields.Selection([
@@ -64,9 +64,11 @@ class ProductProduct(models.Model):
         ('einlagerung', 'Einlagerung')], string='Delivery Strategy')
 
     def action_load_attribute_category(self):
+        self.ensure_one()
+        ProductAttributesChecklist = self.env['product.attributes.checklist']
         if self.checklist_category_id:
             for attribute in self.checklist_category_id.attribute_ids:
-                self.checklist_ids = [(4, attribute.id, None) for attribute in self.checklist_category_id.attribute_ids]
+                ProductAttributesChecklist.create({'product_id': self.id, 'name': attribute.id})
 
     @api.onchange('checklist_category_id')
     def _onchange_checklist_category_id(self):
