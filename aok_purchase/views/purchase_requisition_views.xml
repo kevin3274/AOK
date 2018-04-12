@@ -81,6 +81,13 @@
         </field>
     </record>
 
+    <record id="action_purchase_requisition_line" model="ir.actions.act_window">
+        <field name="name">Purchase Agreement Lines</field>
+        <field name="res_model">purchase.requisition.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
     <record id="action_purchase_requisition_line_report" model="ir.actions.act_window">
         <field name="name">Purchase Agreement Analysis</field>
         <field name="res_model">purchase.requisition.line</field>
