@@ -11,6 +11,7 @@
     'depends': ['account_accountant', 'account_banking_sepa_credit_transfer'],
     'data': [
         'views/account_views.xml',
+        'views/partner_views.xml',
     ],
     'test': [
     ],
