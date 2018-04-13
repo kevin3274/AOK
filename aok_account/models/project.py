@@ -15,7 +15,15 @@ class Project(models.Model):
     @api.model
     def create(self, vals):
         res = super(Project, self).create(vals)
-        self.env['account.analytic.default'].create({'product_id': res.product_analytic_id.id, 'analytic_id': res.analytic_account_id.id})
+        if res.product_analytic_id:
+            self.env['account.analytic.default'].create({'product_id': res.product_analytic_id.id, 'analytic_id': res.analytic_account_id.id})
+        return res
+
+    @api.multi
+    def write(self, vals):
+        res = super(Project, self).write(vals)
+        if vals.get('product_analytic_id'):
+            self.env['account.analytic.default'].create({'product_id': vals.get('product_analytic_id'), 'analytic_id': vals.get('analytic_account_id')})
         return res
 
 
