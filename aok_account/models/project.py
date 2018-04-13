@@ -8,6 +8,10 @@ class Project(models.Model):
 
     product_analytic_id = fields.Many2one("product.product", string="Analytic Product")
 
+    _sql_constraints = [
+        ('product_uniq', 'unique(product_analytic_id)', 'Product can be used in only one Project.'),
+    ]
+
     @api.model
     def create(self, vals):
         res = super(Project, self).create(vals)
