@@ -3,3 +3,4 @@
 from . import account
 from . import partner
 from . import project
+from . import account_asset

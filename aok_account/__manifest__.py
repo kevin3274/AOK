@@ -8,11 +8,13 @@
     'summary': 'AOK Account',
     'description': "",
     'website': 'https://www.odoo.com/',
-    'depends': ['account_accountant', 'account_banking_sepa_credit_transfer', 'project', 'account_analytic_default'],
+    'depends': ['account_accountant', 'account_banking_sepa_credit_transfer', 'project', 'account_analytic_default', 'account_asset'],
     'data': [
         'views/account_views.xml',
         'views/partner_views.xml',
         'views/project_views.xml',
+        'data/account_asset_sequence.xml',
+        'views/account_asset_views.xml',
     ],
     'test': [
     ],
