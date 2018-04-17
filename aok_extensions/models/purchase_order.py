@@ -41,13 +41,12 @@ class PurchaseOrder(models.Model):
         return lines
 
     @api.multi
-    def _notify_changed_dates(self, vals):
+    def _notify_changed_dates(self, edited_lines):
         self.ensure_one()
 
         SaleOrderModel = self.env['sale.order']
         MailMailModel = self.env['mail.mail']
 
-        edited_lines = self._get_edited_lines(vals)
         if not len(edited_lines):
             return
 
@@ -73,9 +72,15 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def write(self, vals):
+
+        edited_lines = self._get_edited_lines(vals)
+
+        res = super(PurchaseOrder, self).write(vals)
+
         for record in self:
-            record._notify_changed_dates(vals)
-        return super(PurchaseOrder, self).write(vals)
+            record._notify_changed_dates(edited_lines)
+
+        return res
 
 
 
