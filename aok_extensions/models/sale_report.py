@@ -50,10 +50,9 @@ class AccountInvoiceReport(models.Model):
         readonly=True
     )
 
-    def __init__(self, pool, cr):
-        """ Extend _depends with additional field """
-        self._depends['product.template'].append('prev_product_id')
-        return super(AccountInvoiceReport, self).__init__(pool, cr)
+    _depends = {
+        'product.template': ['prev_product_id'],
+    }
 
     def _select(self):
         select_str = super(AccountInvoiceReport, self)._select()

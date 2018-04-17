@@ -91,7 +91,7 @@
     </record>
 
     <record id="view_sales_order_filter_inherit_aok" model="ir.ui.view">
-        <field name="name">ale.order.list.select.inherit.aok</field>
+        <field name="name">sale.order.list.select.inherit.aok</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
         <field name="arch" type="xml">

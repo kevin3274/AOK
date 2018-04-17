@@ -67,9 +67,9 @@ class ProductTemplate(models.Model):
 
     # Purchase Information
 
-    responsible_id = fields.Many2one(
+    purchase_responsible_id = fields.Many2one(
         comodel_name='res.users',
-        string='Responsible'
+        string='Purchase Responsible'
     )
 
     competency_tag_ids = fields.Many2many(
@@ -132,7 +132,7 @@ class ProductTemplate(models.Model):
         action = IrActionModel.for_xml_id('sale', 'action_quotations')
         action.update({
             'domain': [
-                ('state', 'in', ['draft', 'sent']),
+                # ('state', 'in', ['draft', 'sent']),
                 ('id', 'in', lines.mapped('order_id').ids)
             ]
         })

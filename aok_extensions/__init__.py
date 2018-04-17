@@ -9,5 +9,5 @@
 # guarantees and support are strongly advised to contract support@modoolar.com
 #
 ##############################################################################
-
+from . import wizard
 from . import models

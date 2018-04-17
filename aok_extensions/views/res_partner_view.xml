@@ -36,6 +36,7 @@
                             <field name="enc_lastname" />
                             <field name="enc_date" />
                             <field name="enc_insurance_number" />
+                            <field name="enc_insurance_status" />
                         </group>
                     </group>
                 </page>
