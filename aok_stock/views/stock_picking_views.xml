@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_picking_form_inherit_aok" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.aok</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+            	<field name="picker_id" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
+                <field name="picking_note"/>
+                <field name="sale_id" readonly="1"/>
+                <field name="purchase_id" readonly="1"/>
+            </field>
+            <field name="location_id" position="after">
+                <field name="picking_nok" invisible="1"/>
+            </field>
+            <page name="extra" position="after">
+                <page name="quality" string="Quality" attrs="{'invisible': [('picking_type_code', '!=', 'incoming')]}">
+                    <group>
+                        <group>
+                            <field name="qc_overpacked"/>
+                            <field name="qc_unpaletted"/>
+                            <field name="qc_false_uom"/>
+                            <field name="qc_mixed_quality"/>
+                            <field name="qc_no_do"/>
+                        </group>
+                        <group>
+                            <field name="qc_higher_140"/>
+                            <field name="qc_oversized"/>
+                            <field name="qc_unlabeled"/>
+                            <field name="qc_false_label"/>
+                            <field name="qc_no_reference"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="qc_note"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="qc_time"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="qc_processing"/>
+                            <field name="qc_print"/>
+                        </group>
+                        <group>
+                            <field name="qc_packaging"/>
+                            <field name="qc_functional_test"/>
+                        </group>
+                    </group>
+                </page>
+            </page>
+            <xpath expr="//field[@name='move_line_ids']//tree/field[@name='state']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="vpicktree_inherit_stock_picking_batch" model="ir.ui.view">
+        <field name="name">stock.picking.tree</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="picking_note"/>
+                <field name="weight"/>
+                <field name="carrier_id"/>
+                <field name="package_count"/>
+            </field>
+        </field>
+    </record>
+    
+    <record id="view_picking_internal_search_inherit_aok" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search.inherit.aok</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <filter name="late" position="before">
+                <filter name="picker_id" string="Assigned to me" domain="[('picker_id', '=', uid)]"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
+
+</odoo>
