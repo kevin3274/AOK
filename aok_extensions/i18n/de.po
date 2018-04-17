@@ -6,14 +6,123 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-10 08:50+0000\n"
-"PO-Revision-Date: 2018-04-10 08:50+0000\n"
+"POT-Creation-Date: 2018-04-17 09:25+0000\n"
+"PO-Revision-Date: 2018-04-17 09:25+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: aok_extensions
+#: model:mail.template,body_html:aok_extensions.send_changed_scheduled_dates
+msgid "\n"
+"<style>\n"
+"    table {\n"
+"        font-family: arial, sans-serif;\n"
+"        border-collapse: collapse;\n"
+"        width: 100%;\n"
+"    }\n"
+"\n"
+"    td, th {\n"
+"        border: 1px solid #dddddd;\n"
+"        text-align: left;\n"
+"        padding: 8px;\n"
+"    }\n"
+"\n"
+"    tr:nth-child(even) {\n"
+"        background-color: #dddddd;\n"
+"    }\n"
+"</style>\n"
+"\n"
+"<div style=\"padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777\">\n"
+"    <table cellspacing=\"0\" cellpadding=\"0\" style=\"width:600px;border-collapse:collapse;background:inherit;color:inherit\">\n"
+"        <tbody><tr>\n"
+"            <td valign=\"center\" width=\"200\" style=\"padding:10px 10px 10px 5px;font-size: 12px\">\n"
+"                <img src=\"/logo.png\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${user.company_id.name}\">\n"
+"            </td>\n"
+"        </tr></tbody>\n"
+"    </table>\n"
+"</div>\n"
+"<div style=\"padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777\">\n"
+"    <p>Dear -,</p>\n"
+"    <p>Write down some text if you want</p>\n"
+"\n"
+"    <table>\n"
+"        <tr>\n"
+"            <th>Product</th>\n"
+"            <th>Date</th>\n"
+"        </tr>\n"
+"\n"
+"    % for line in ctx['edited_lines']\n"
+"        <tr>\n"
+"            <td>${line.product_id.name}</td>\n"
+"            <td>${line.date_planned}</td>\n"
+"        </tr>\n"
+"    % endfor\n"
+"    </table>\n"
+"</div>\n"
+"<div style=\"padding:0px;width:600px;margin:auto; margin-top: 10px; background: #fff repeat top /100%;color:#777777\">\n"
+"    ${user.signature | safe}\n"
+"    <p style=\"font-size: 11px; margin-top: 10px;\">\n"
+"        <strong>Sent by ${user.company_id.name} using <a href=\"www.odoo.com\" style=\"text-decoration:none; color: #875A7B;\">Odoo</a></strong>\n"
+"    </p>\n"
+"</div>\n"
+"            "
+msgstr "\n"
+"<style>\n"
+"    table {\n"
+"        font-family: arial, sans-serif;\n"
+"        border-collapse: collapse;\n"
+"        width: 100%;\n"
+"    }\n"
+"\n"
+"    td, th {\n"
+"        border: 1px solid #dddddd;\n"
+"        text-align: left;\n"
+"        padding: 8px;\n"
+"    }\n"
+"\n"
+"    tr:nth-child(even) {\n"
+"        background-color: #dddddd;\n"
+"    }\n"
+"</style>\n"
+"\n"
+"<div style=\"padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777\">\n"
+"    <table cellspacing=\"0\" cellpadding=\"0\" style=\"width:600px;border-collapse:collapse;background:inherit;color:inherit\">\n"
+"        <tbody><tr>\n"
+"            <td valign=\"center\" width=\"200\" style=\"padding:10px 10px 10px 5px;font-size: 12px\">\n"
+"                <img src=\"/logo.png\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${user.company_id.name}\">\n"
+"            </td>\n"
+"        </tr></tbody>\n"
+"    </table>\n"
+"</div>\n"
+"<div style=\"padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777\">\n"
+"    <p>Dear -,</p>\n"
+"    <p>Write down some text if you want</p>\n"
+"\n"
+"    <table>\n"
+"        <tr>\n"
+"            <th>Product</th>\n"
+"            <th>Date</th>\n"
+"        </tr>\n"
+"\n"
+"    % for line in ctx['edited_lines']\n"
+"        <tr>\n"
+"            <td>${line.product_id.name}</td>\n"
+"            <td>${line.date_planned}</td>\n"
+"        </tr>\n"
+"    % endfor\n"
+"    </table>\n"
+"</div>\n"
+"<div style=\"padding:0px;width:600px;margin:auto; margin-top: 10px; background: #fff repeat top /100%;color:#777777\">\n"
+"    ${user.signature | safe}\n"
+"    <p style=\"font-size: 11px; margin-top: 10px;\">\n"
+"        <strong>Sent by ${user.company_id.name} using <a href=\"www.odoo.com\" style=\"text-decoration:none; color: #875A7B;\">Odoo</a></strong>\n"
+"    </p>\n"
+"</div>\n"
+"            "
 
 #. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_product_abstract_tag_active
@@ -24,6 +133,11 @@ msgid "Active"
 msgstr "Aktiv"
 
 #. module: aok_extensions
+#: model:ir.model.fields,field_description:aok_extensions.field_stock_warehouse_orderpoint_actual_stock
+msgid "Actual Stock"
+msgstr "Lagerbestand"
+
+#. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_product_product_file_attachment_ids
 #: model:ir.model.fields,field_description:aok_extensions.field_product_product_url_attachment_ids
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_file_attachment_ids
@@ -32,7 +146,7 @@ msgid "Attachment"
 msgstr "Attachment"
 
 #. module: aok_extensions
-#: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_id_5320
+#: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_id_7267
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_name
 #: model:ir.ui.view,arch_db:aok_extensions.view_order_barcode_form
 msgid "Barcode"
@@ -48,6 +162,11 @@ msgstr "Barcodes"
 #: model:ir.model.fields,field_description:aok_extensions.field_res_users_crm_lead
 msgid "CRM-ID"
 msgstr "CRM-ID"
+
+#. module: aok_extensions
+#: model:ir.ui.view,arch_db:aok_extensions.view_send_new_product_wizard_form
+msgid "Cancel"
+msgstr "Abbrechen"
 
 #. module: aok_extensions
 #: model:ir.actions.act_window,help:aok_extensions.action_product_template_tag_form
@@ -83,6 +202,7 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #. module: aok_extensions
+#: model:ir.model.fields,field_description:aok_extensions.field_account_invoice_contact_person
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_order_contact_person
 msgid "Contact person"
 msgstr "Ansprechpartner"
@@ -97,6 +217,7 @@ msgstr "Copyright"
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_competency_tag_create_uid
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_tag_create_uid
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_create_uid
+#: model:ir.model.fields,field_description:aok_extensions.field_send_new_product_wizard_create_uid
 msgid "Created by"
 msgstr "Erstellt von"
 
@@ -104,6 +225,7 @@ msgstr "Erstellt von"
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_competency_tag_create_date
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_tag_create_date
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_create_date
+#: model:ir.model.fields,field_description:aok_extensions.field_send_new_product_wizard_create_date
 msgid "Created on"
 msgstr "Erstellt am"
 
@@ -118,6 +240,7 @@ msgstr "Geburtsdatum"
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_competency_tag_display_name
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_tag_display_name
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_display_name
+#: model:ir.model.fields,field_description:aok_extensions.field_send_new_product_wizard_display_name
 msgid "Display Name"
 msgstr "Anzeigename"
 
@@ -146,6 +269,7 @@ msgstr "Externe Medien"
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_competency_tag_id
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_tag_id
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_id
+#: model:ir.model.fields,field_description:aok_extensions.field_send_new_product_wizard_id
 msgid "ID"
 msgstr "ID"
 
@@ -157,7 +281,7 @@ msgstr "ISBN Nummer"
 
 #. module: aok_extensions
 #: selection:ir.attachment,external_type:0
-#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_files_only_tree
+#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_tree
 msgid "Image"
 msgstr "Image"
 
@@ -168,6 +292,12 @@ msgid "Insurance Number"
 msgstr "Versichertennummer"
 
 #. module: aok_extensions
+#: model:ir.model.fields,field_description:aok_extensions.field_res_partner_enc_insurance_status
+#: model:ir.model.fields,field_description:aok_extensions.field_res_users_enc_insurance_status
+msgid "Insurance Status"
+msgstr "Versichertenstatus"
+
+#. module: aok_extensions
 #: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_product_documents
 msgid "Internal Media"
 msgstr "Interne Medien"
@@ -175,7 +305,12 @@ msgstr "Interne Medien"
 #. module: aok_extensions
 #: sql_constraint:product.template:0
 msgid "Internal reference already exists!"
-msgstr "Internal reference already exists!"
+msgstr "Interne Referenz existiert bereits!"
+
+#. module: aok_extensions
+#: model:ir.model,name:aok_extensions.model_account_invoice
+msgid "Invoice"
+msgstr "Rechnung"
 
 #. module: aok_extensions
 #: model:ir.model,name:aok_extensions.model_account_invoice_report
@@ -187,6 +322,7 @@ msgstr "Statistik Rechnungen"
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_competency_tag___last_update
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_tag___last_update
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode___last_update
+#: model:ir.model.fields,field_description:aok_extensions.field_send_new_product_wizard___last_update
 msgid "Last Modified on"
 msgstr "Zuletzt geändert am"
 
@@ -194,6 +330,7 @@ msgstr "Zuletzt geändert am"
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_competency_tag_write_uid
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_tag_write_uid
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_write_uid
+#: model:ir.model.fields,field_description:aok_extensions.field_send_new_product_wizard_write_uid
 msgid "Last Updated by"
 msgstr "Zuletzt aktualisiert durch"
 
@@ -201,6 +338,7 @@ msgstr "Zuletzt aktualisiert durch"
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_competency_tag_write_date
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_tag_write_date
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_write_date
+#: model:ir.model.fields,field_description:aok_extensions.field_send_new_product_wizard_write_date
 msgid "Last Updated on"
 msgstr "Zuletzt aktualisiert am"
 
@@ -226,6 +364,11 @@ msgid "Manage product template tags to better classify them for tracking and ana
 msgstr "Manage product template tags to better classify them for tracking and analysis purposes."
 
 #. module: aok_extensions
+#: model:ir.model,name:aok_extensions.model_stock_warehouse_orderpoint
+msgid "Minimum Inventory Rule"
+msgstr "Mindestbestandsregel"
+
+#. module: aok_extensions
 #: selection:product.template,published:0
 msgid "Monthly"
 msgstr "Monthly"
@@ -233,9 +376,8 @@ msgstr "Monthly"
 #. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_res_partner_enc_name
 #: model:ir.model.fields,field_description:aok_extensions.field_res_users_enc_name
-#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_files_only_form
-#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_files_only_tree
-#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_url_only_tree
+#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_form
+#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_tree
 #: model:ir.ui.view,arch_db:aok_extensions.view_product_template_competency_tag_form
 #: model:ir.ui.view,arch_db:aok_extensions.view_product_template_tag_form
 msgid "Name"
@@ -263,13 +405,13 @@ msgstr "Seitenanzahl"
 #: model:ir.model.fields,field_description:aok_extensions.field_account_invoice_report_prev_product_id
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_report_prev_product_id
 msgid "Previous Product"
-msgstr "Previous Product"
+msgstr "Vorgängerprodukt"
 
 #. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_product_product_prev_product_id
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_prev_product_id
 msgid "Previous product"
-msgstr "Previous product"
+msgstr "Vorgängerprodukt"
 
 #. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_product_product_printing
@@ -279,6 +421,7 @@ msgstr "Druckauflage"
 
 #. module: aok_extensions
 #: model:ir.model,name:aok_extensions.model_product_product
+#: model:ir.model.fields,field_description:aok_extensions.field_send_new_product_wizard_product_id
 msgid "Product"
 msgstr "Produkt"
 
@@ -344,6 +487,17 @@ msgid "Published"
 msgstr "Erscheinungsweise"
 
 #. module: aok_extensions
+#: model:ir.model,name:aok_extensions.model_purchase_order
+msgid "Purchase Order"
+msgstr "Beschaffungsauftrag"
+
+#. module: aok_extensions
+#: model:ir.model.fields,field_description:aok_extensions.field_product_product_purchase_responsible_id
+#: model:ir.model.fields,field_description:aok_extensions.field_product_template_purchase_responsible_id
+msgid "Purchase Responsible"
+msgstr "Verantwortlicher Einkauf"
+
+#. module: aok_extensions
 #: selection:product.template,published:0
 msgid "Quarterly"
 msgstr "Vierteljährlich"
@@ -381,6 +535,22 @@ msgstr "Sale Orders"
 #: model:ir.model,name:aok_extensions.model_sale_report
 msgid "Sales Orders Statistics"
 msgstr "Statistik Verkaufsaufträge"
+
+#. module: aok_extensions
+#: model:mail.template,subject:aok_extensions.send_changed_scheduled_dates
+msgid "Scheduled dates changed"
+msgstr "Scheduled dates changed"
+
+#. module: aok_extensions
+#: model:ir.actions.act_window,name:aok_extensions.action_send_new_product_wizard
+#: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_aok
+msgid "Send New Product"
+msgstr "Senden Sie ein neues Produkt"
+
+#. module: aok_extensions
+#: model:ir.ui.view,arch_db:aok_extensions.view_send_new_product_wizard_form
+msgid "Send Products"
+msgstr "Send Products"
 
 #. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_res_partner_send_list
@@ -435,6 +605,11 @@ msgid "Subs To"
 msgstr "ABO bis"
 
 #. module: aok_extensions
+#: model:ir.model.fields,field_description:aok_extensions.field_send_new_product_wizard_date
+msgid "Subs to"
+msgstr "Subs to"
+
+#. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_product_abstract_tag_name
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_competency_tag_name
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_tag_name
@@ -456,12 +631,10 @@ msgid "The active field allows you to hide the category without removing it."
 msgstr "Das \"Aktiv\" Feld erlaubt das Verstecken der Kategorie ohne diese zu löschen."
 
 #. module: aok_extensions
-#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_files_only_form
-#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_files_only_tree
-#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_url_only_form
-#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_url_only_tree
+#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_form
+#: model:ir.ui.view,arch_db:aok_extensions.view_attachment_tree
 msgid "Upload Date"
-msgstr "Datum des Hochladens"
+msgstr "Upload Date"
 
 #. module: aok_extensions
 #: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_product_documents
@@ -492,4 +665,9 @@ msgstr "Jährlich"
 #: model:ir.model,name:aok_extensions.model_ir_attachment
 msgid "ir.attachment"
 msgstr "ir.attachment"
+
+#. module: aok_extensions
+#: model:ir.model,name:aok_extensions.model_send_new_product_wizard
+msgid "send.new.product.wizard"
+msgstr "send.new.product.wizard"
 

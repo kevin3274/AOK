@@ -19,15 +19,22 @@ class SendNewProduct(models.TransientModel):
 
         SaleOrderModel = self.env['sale.order']
         SaleOrderLineModel = self.env['sale.order.line']
+        ProductProductModel = self.env['product.product']
 
         product_id = self._context.get('active_id', False)
+
+        if self._context.get('active_model') == 'product.template':
+            product = ProductProductModel.search([
+                ('product_tmpl_id', '=', self._context.get('active_id', False))
+            ], limit=1)
+            product_id = product.id
 
         if not product_id:
             raise exceptions.MissingError('Product_id does not exist.')
 
         orders = SaleOrderModel.search([
             ('subs_to', '>=', self.date),
-            ('order_line.product_id.product_tmpl_id', '=', product_id)
+            ('order_line.product_id', '=', product_id)
         ])
 
         for order in orders:
