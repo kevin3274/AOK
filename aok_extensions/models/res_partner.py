@@ -44,6 +44,10 @@ class ResPartner(models.Model):
         string='Insurance Number'
     )
 
+    enc_insurance_status = fields.Integer(
+        string='Insurance Status'
+    )
+
     _sql_constraints = [
         ('email_uniq', 'unique (email)', "Email address already exists!"),
     ]

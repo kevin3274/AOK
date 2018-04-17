@@ -22,12 +22,16 @@
 """,
     'data': [
         'data/sequences.xml',
+        'data/email_template_data.xml',
         'security/ir.model.access.csv',
+
+        'wizard/send_new_product_wizard_view.xml',
+
         'views/product_template_view.xml',
         'views/product_documents_view.xml',
         'views/res_partner_view.xml',
         'views/sale_order_view.xml',
-        'views/stock_warehouse_view.xml'
+        'views/stock_view.xml'
     ],
     'demo': [
     ],

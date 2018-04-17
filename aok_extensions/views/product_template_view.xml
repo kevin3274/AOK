@@ -19,6 +19,11 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
 
+            <header position="inside">
+                <button name="%(action_send_new_product_wizard)d" type="action"
+                        string="Send New Product" class="oe_highlight" />
+            </header>
+
             <button name="toggle_active" position="before">
                 <button class="oe_stat_button" name="action_view_quotations"
                     type="object" icon="fa-usd" groups="sales_team.group_sale_salesman">
@@ -164,7 +169,7 @@
         <field name="arch" type="xml">
             <group name="vendors" position="before">
                 <group>
-                    <field name="responsible_id" />
+                    <field name="purchase_responsible_id" />
                     <field name="competency_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 </group>
             </group>

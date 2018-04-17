@@ -14,7 +14,7 @@ from odoo import models, fields, api
 
 
 class IrAttachment(models.Model):
-    _inherit='ir.attachment'
+    _inherit = 'ir.attachment'
 
     external_type = fields.Selection(
         selection=[
