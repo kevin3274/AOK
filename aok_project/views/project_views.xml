@@ -24,6 +24,7 @@
         </field>
     </record>
 
+    <!--
     <record id="view_project_task_gantt" model="ir.ui.view">
         <field name="name">project.task.gantt</field>
         <field name="model">project.task</field>
@@ -46,5 +47,6 @@
     <record id="project.action_view_task" model="ir.actions.act_window">
         <field name="view_mode">kanban,tree,form,calendar,pivot,graph,gantt</field>
     </record>
+    -->
 
 </odoo>
