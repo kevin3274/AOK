@@ -67,3 +67,13 @@ class Location(models.Model):
     _inherit = "stock.location"
 
     height = fields.Float("Height")
+
+
+class StockPickingBatch(models.Model):
+    _inherit = "stock.picking.batch"
+
+    @api.multi
+    def confirm_picking(self):
+        self.ensure_one()
+        self.mapped('picking_ids').write({'picker_id': self.user_id.id})
+        return super(StockPickingBatch, self).confirm_picking()
