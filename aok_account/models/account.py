@@ -101,6 +101,15 @@ class AccountPaymentMode(models.Model):
     consider_payment_discount = fields.Boolean("Consider Payment Discount", default=True)
 
 
+class AccountPaymentLine(models.Model):
+    _inherit = 'account.payment.line'
+
+    payment_line_discount_ids = fields.One2many('account.payment.line.discount', 'payment_line_id', string="Payment Order Line Discount")
+    payment_discount = fields.Monetary(string="Payment Discount", currency_field='currency_id')
+    deduct_discount = fields.Boolean("Deduct Discount")
+    discount_due_date = fields.Date(string="Discount Due Date")
+
+
 class AccountPaymentLineDiscount(models.Model):
     _name = 'account.payment.line.discount'
     _description = 'Payment Line Discount'
@@ -146,11 +155,14 @@ class AccountPaymentOrder(models.Model):
 
     consider_payment_discount = fields.Boolean(related="payment_mode_id.consider_payment_discount", string="Consider Payment Discount")
 
-
-class AccountPaymentLine(models.Model):
-    _inherit = 'account.payment.line'
-
-    payment_line_discount_ids = fields.Many2many('account.payment.line.discount', string="Payment Order Line Discount")
-    payment_discount = fields.Monetary(string="Payment Discount", currency_field='currency_id')
-    deduct_discount = fields.Boolean("Deduct Discount")
-    discount_due_date = fields.Date(string="Discount Due Date")
+    @api.multi
+    def draft2open(self):
+        AccountPaymentLineDiscount = self.env['account.payment.line.discount']
+        AccountInvoiceTax = self.env['account.invoice.tax']
+        for order in self:
+            for line in order.payment_line_ids:
+                if line.move_line_id:
+                    invoice = line.move_line_id.invoice_id
+                    tax_line = invoice.tax_line_ids and invoice.tax_line_ids[0] or AccountInvoiceTax
+                    AccountPaymentLineDiscount.create({'payment_line_id': line.id, 'tax_id': tax_line.tax_id.id, 'account_id': tax_line.account_id.id})
+        return super(AccountPaymentOrder, self).draft2open()
