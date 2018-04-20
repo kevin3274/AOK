@@ -104,10 +104,20 @@ class AccountPaymentMode(models.Model):
 class AccountPaymentLine(models.Model):
     _inherit = 'account.payment.line'
 
+    def _compute_all(self):
+        for line in self:
+            sum = 0.0
+            dates = []
+            for discount in line.payment_line_discount_ids:
+                sum += discount.payment_discount
+                dates.append(discount.discount_due_date)
+            line.payment_discount = sum
+            line.discount_due_date = min(dates)
+
     payment_line_discount_ids = fields.One2many('account.payment.line.discount', 'payment_line_id', string="Payment Order Line Discount")
-    payment_discount = fields.Monetary(string="Payment Discount", currency_field='currency_id')
+    payment_discount = fields.Monetary(compute="_compute_all", string="Payment Discount", currency_field='currency_id')
     deduct_discount = fields.Boolean("Deduct Discount")
-    discount_due_date = fields.Date(string="Discount Due Date")
+    discount_due_date = fields.Date(compute="_compute_all", string="Discount Due Date")
 
 
 class AccountPaymentLineDiscount(models.Model):
