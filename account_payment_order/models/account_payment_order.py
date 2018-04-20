@@ -47,7 +47,6 @@ class AccountPaymentOrder(models.Model):
     journal_id = fields.Many2one(
         'account.journal', string='Bank Journal', ondelete='restrict',
         readonly=True, states={'draft': [('readonly', False)]},
-        domain=domain_journal_id,
         track_visibility='onchange')
     # The journal_id field is only required at confirm step, to
     # allow auto-creation of payment order from invoice

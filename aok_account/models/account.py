@@ -90,8 +90,8 @@ class AccountPaymentTerm(models.Model):
         if dist:
             last_date = result and result[-1][0] or fields.Date.today()
             result.append((last_date, dist, line))
-        if self.one_due_amount:
-            return [(result[-1][0], value, line)]
+#         if self.one_due_amount:
+#             return [(result[-1][0], value, line)]
         return result
 
 
@@ -117,14 +117,14 @@ class AccountPaymentLineDiscount(models.Model):
     def _compute_all(self):
         for record in self:
             invoice = record.payment_line_id.move_line_id.invoice_id
-            record.invoice_amount = invoice.amount_total
+            record.invoice_amount = record.invoice_tax_id.base + record.invoice_tax_id.amount_total
 
             date_invoice = invoice.date_invoice
             if not date_invoice:
                 date_invoice = fields.Date.context_today(self)
 
             pterm = invoice.payment_term_id
-            pterm_list = pterm.with_context(currency_id=invoice.company_id.currency_id.id).compute_payment_term_date(value=invoice.amount_total, date_ref=date_invoice)[0]
+            pterm_list = pterm.with_context(currency_id=invoice.company_id.currency_id.id).compute_payment_term_date(value=record.invoice_amount, date_ref=date_invoice)[0]
             discount_date = payment_discount = False
             payment_discount_amount = 0.0
             for line in pterm_list:
@@ -148,6 +148,7 @@ class AccountPaymentLineDiscount(models.Model):
     payment_discount = fields.Monetary(compute="_compute_all", string="Payment Discount", currency_field='currency_id')
     tax_id = fields.Many2one("account.tax", string="Tax")
     account_id = fields.Many2one("account.account", string="Account")
+    invoice_tax_id = fields.Many2one('account.invoice.tax', string="Account Invoice Tax")
 
 
 class AccountPaymentOrder(models.Model):
@@ -163,6 +164,6 @@ class AccountPaymentOrder(models.Model):
             for line in order.payment_line_ids:
                 if line.move_line_id:
                     invoice = line.move_line_id.invoice_id
-                    tax_line = invoice.tax_line_ids and invoice.tax_line_ids[0] or AccountInvoiceTax
-                    AccountPaymentLineDiscount.create({'payment_line_id': line.id, 'tax_id': tax_line.tax_id.id, 'account_id': tax_line.account_id.id})
+                    for tax_line in invoice.tax_line_ids:
+                        AccountPaymentLineDiscount.create({'payment_line_id': line.id, 'tax_id': tax_line.tax_id.id, 'account_id': tax_line.tax_id.discount_account_id.id, 'invoice_tax_id': tax_line.id})
         return super(AccountPaymentOrder, self).draft2open()
