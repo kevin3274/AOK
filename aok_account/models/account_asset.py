@@ -69,3 +69,18 @@ class AccountAssetCategory(models.Model):
     _inherit = 'account.asset.category'
 
     is_full_amount = fields.Boolean(string="Full Amount Deprecation", default=True)
+
+
+class AccountAssetDepreciationLine(models.Model):
+    _inherit = 'account.asset.depreciation.line'
+
+    @api.multi
+    def post_lines_and_close_asset(self):
+        # we re-evaluate the assets to determine whether we can close them
+        if self.env.context.get('from_button'):
+            for line in self:
+                line.log_message_when_posted()
+                asset = line.asset_id
+                if asset.currency_id.is_zero(asset.value_residual):
+                    asset.message_post(body=_("Document closed."))
+                    asset.write({'state': 'close'})
