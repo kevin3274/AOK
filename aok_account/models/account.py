@@ -112,7 +112,7 @@ class AccountPaymentLine(models.Model):
                 sum += discount.payment_discount
                 dates.append(discount.discount_due_date)
             line.payment_discount = sum
-            line.discount_due_date = min(dates)
+            line.discount_due_date = min(dates) if dates else False
 
     payment_line_discount_ids = fields.One2many('account.payment.line.discount', 'payment_line_id', string="Payment Order Line Discount")
     payment_discount = fields.Monetary(compute="_compute_all", string="Payment Discount", currency_field='currency_id')
@@ -177,3 +177,63 @@ class AccountPaymentOrder(models.Model):
                     for tax_line in invoice.tax_line_ids:
                         AccountPaymentLineDiscount.create({'payment_line_id': line.id, 'tax_id': tax_line.tax_id.id, 'account_id': tax_line.tax_id.discount_account_id.id, 'invoice_tax_id': tax_line.id})
         return super(AccountPaymentOrder, self).draft2open()
+
+    @api.multi
+    def generate_move(self):
+        """
+        Create the moves that pay off the move lines from
+        the payment/debit order.
+        """
+        self.ensure_one()
+        am_obj = self.env['account.move']
+        post_move = self.payment_mode_id.post_move
+        # prepare a dict "trfmoves" that can be used when
+        # self.payment_mode_id.move_option = date or line
+        # key = unique identifier (date or True or line.id)
+        # value = bank_pay_lines (recordset that can have several entries)
+        trfmoves = {}
+        for bline in self.bank_line_ids:
+            hashcode = bline.move_line_offsetting_account_hashcode()
+            if hashcode in trfmoves:
+                trfmoves[hashcode] += bline
+            else:
+                trfmoves[hashcode] = bline
+
+        for hashcode, blines in trfmoves.items():
+            mvals = self._prepare_move(blines)
+            total_company_currency = total_payment_currency = 0
+            for bline in blines:
+                total_company_currency += bline.amount_company_currency
+                total_payment_currency += bline.amount_currency
+                partner_ml_vals = self._prepare_move_line_partner_account(
+                    bline)
+                mvals['line_ids'].append((0, 0, partner_ml_vals))
+            trf_ml_vals = self._prepare_move_line_offsetting_account(
+                total_company_currency, total_payment_currency, blines)
+            split_vals = self._split_lines(trf_ml_vals)
+            for vals in split_vals:
+                mvals['line_ids'].append(vals)
+            move = am_obj.create(mvals)
+            blines.reconcile_payment_lines()
+            if post_move:
+                move.post()
+
+    @api.multi
+    def _split_lines(self, trf_ml_vals=None):
+        self.ensure_one()
+        if trf_ml_vals is None:
+            trf_ml_vals = {}
+        list1 = []
+        for payment_line in self.payment_line_ids:
+            total_discount = 0.0
+            for discount in payment_line.payment_line_discount_ids:
+                invoice_tax = discount.invoice_tax_id
+                if invoice_tax:
+                    base_discount = (invoice_tax.base * discount.payment_discount_perc / 100)
+                    tax_discount = (invoice_tax.amount_total * discount.payment_discount_perc / 100)
+                    total_discount += base_discount + tax_discount
+                    discount_account = invoice_tax.tax_id.discount_account_id
+                    list1.append((0, 0, {'credit': base_discount, 'name': 'Payment Discount', 'debit': 0.0, 'partner_id': trf_ml_vals.get('partner_id'), 'date': trf_ml_vals.get('date'), 'account_id': invoice_tax.account_id.id}))
+                    list1.append((0, 0, {'credit': tax_discount, 'name': 'Payment Tax Discount', 'debit': 0.0, 'partner_id': trf_ml_vals.get('partner_id'), 'date': trf_ml_vals.get('date'), 'account_id': discount_account.id}))
+            list1.append((0, 0, {'credit': trf_ml_vals.get('credit') - total_discount, 'name': trf_ml_vals.get('name'), 'debit': 0.0, 'partner_id': trf_ml_vals.get('partner_id'), 'date': trf_ml_vals.get('date'), 'account_id': trf_ml_vals.get('account_id')}))
+        return list1
