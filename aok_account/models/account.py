@@ -16,6 +16,7 @@ class AccountPaymentTerm(models.Model):
     _inherit = "account.payment.term"
 
     one_due_amount = fields.Boolean('Create one due amount', default=True)
+    as400_payment_term_code = fields.Char("AS400 Payment Term Code")
 
     @api.one
     def compute(self, value, date_ref=False):
