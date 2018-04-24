@@ -9,6 +9,9 @@
             <field name="type" position="after">
                 <field name="organisation_id" domain="[('is_company', '=', True)]"/>
             </field>
+            <field name="property_payment_term_id" position="after">
+                <field name="as400_dunning_type"/>
+            </field>
         </field>
     </record>
 

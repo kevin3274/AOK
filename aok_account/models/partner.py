@@ -7,6 +7,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     organisation_id = fields.Many2one('res.partner', string='Organisation')
+    as400_dunning_type = fields.Char("Dunning Type")
 
     @api.depends('is_company', 'parent_id.commercial_partner_id', 'organisation_id')
     def _compute_commercial_partner(self):
