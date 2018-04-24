@@ -100,6 +100,7 @@ class AccountPaymentMode(models.Model):
     _inherit = "account.payment.mode"
 
     consider_payment_discount = fields.Boolean("Consider Payment Discount", default=True)
+    as400_payment_mode = fields.Char("AS400 Payment Mode")
 
 
 class AccountPaymentLine(models.Model):

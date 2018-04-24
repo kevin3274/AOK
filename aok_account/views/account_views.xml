@@ -34,6 +34,9 @@
             <field name="group_lines" position="after">
                 <field name="consider_payment_discount" attrs="{'invisible': [('payment_type','!=','outbound')]}"/>
             </field>
+            <field name="name" position="after">
+                <field name="as400_payment_mode"/>
+            </field>
         </field>
     </record>
 
