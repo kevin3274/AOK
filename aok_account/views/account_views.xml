@@ -9,6 +9,9 @@
             <field name="name" position="after">
                 <field name="discount_account_id" attrs="{'invisible': [('type_tax_use','!=','purchase')]}"/>
             </field>
+            <field name="tag_ids" position="after">
+                <field name="as400_tax_key"/>
+            </field>
         </field>
     </record>
 

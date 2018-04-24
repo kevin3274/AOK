@@ -9,6 +9,7 @@ class AccountTax(models.Model):
     _inherit = 'account.tax'
 
     discount_account_id = fields.Many2one('account.account', domain=[('deprecated', '=', False)], string='Discount Account', ondelete='restrict')
+    as400_tax_key = fields.Char(string="AS400 Tax Key")
 
 
 class AccountPaymentTerm(models.Model):
