@@ -21,10 +21,10 @@ class Project(models.Model):
 
     @api.multi
     def write(self, vals):
-        res = super(Project, self).write(vals)
-        if vals.get('product_analytic_id'):
-            self.env['account.analytic.default'].create({'product_id': vals.get('product_analytic_id'), 'analytic_id': vals.get('analytic_account_id')})
-        return res
+        for record in self:
+            if vals.get('product_analytic_id'):
+                self.env['account.analytic.default'].create({'product_id': vals.get('product_analytic_id'), 'analytic_id': record.analytic_account_id.id})
+        return super(Project, self).write(vals)
 
 
 class ProductProduct(models.Model):
