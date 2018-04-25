@@ -1,14 +1,13 @@
 #See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api, _
+from odoo import models, api, _
 from odoo.exceptions import UserError
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    @api.multi
+    @api.model
     def create(self, vals):
-        res = super(ProductTemplate, self).create(vals)
         if not vals['taxes_id']:
             raise UserError(_('There is no income tax set. Please define one.'))
         if not vals['supplier_taxes_id']:
@@ -21,7 +20,7 @@ class ProductTemplate(models.Model):
             income_taxes = categ.property_account_income_categ_id.datev_steuer
         else:
             raise UserError(_('There is no income account set. Please define one.'))
-        if income_taxes.ids not in vals['taxes_id'][0][2]:
+        if income_taxes.ids != vals['taxes_id'][0][2]:
             itaxes = []
             for tax in income_taxes:
                 itaxes.append(tax.name)
@@ -35,12 +34,12 @@ class ProductTemplate(models.Model):
             expense_taxes = categ.property_account_expense_categ_id.datev_steuer
         else:
             raise UserError(_('There is no expense account set. Please define one.'))
-        if expense_taxes.ids not in vals['supplier_taxes_id'][0][2]:
+        if expense_taxes.ids != vals['supplier_taxes_id'][0][2]:
             etaxes = []
             for tax in expense_taxes:
                 etaxes.append(tax.name)
             raise UserError(_('The tax in the Product is not equal to the tax in the expense account. You can only use this tax: %s.' % ', '.join(etaxes)))
-        return res
+        return super(ProductTemplate, self).create(vals)
 
     @api.multi
     def write(self, vals):
@@ -75,13 +74,25 @@ class ProductTemplate(models.Model):
         if not expense_account.datev_steuer:
             raise UserError(_('The expense account has no tax. You must set a tax rate in this account: %s.' % expense_account.code))
 
-        if taxes and income_account.datev_steuer.ids not in taxes.ids:
+        if income_account.datev_steuer and not taxes.ids:
+            itaxes = []
+            for tax in income_account.datev_steuer:
+                itaxes.append(tax.name)
+            raise UserError(_('You have no income taxes defined. Please set this tax: %s.' % ', '.join(itaxes)))
+
+        if expense_account.datev_steuer.ids and not supplier_taxes.ids:
+            etaxes = []
+            for tax in expense_account.datev_steuer:
+                etaxes.append(tax.name)
+            raise UserError(_('You have no expense taxes defined. Please set this tax: %s.' % ', '.join(etaxes)))
+
+        if taxes and income_account.datev_steuer.ids != taxes.ids:
             itaxes = []
             for tax in income_account.datev_steuer:
                 itaxes.append(tax.name)
             raise UserError(_('The tax in the product is not equal to the tax in the income account. You can only use this tax: %s.' % ', '.join(itaxes)))
 
-        if supplier_taxes and expense_account.datev_steuer.ids not in supplier_taxes.ids:
+        if supplier_taxes and expense_account.datev_steuer.ids != supplier_taxes.ids:
             etaxes = []
             for tax in expense_account.datev_steuer:
                 etaxes.append(tax.name)
