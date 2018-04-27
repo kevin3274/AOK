@@ -80,24 +80,6 @@ class ProductTemplate(models.Model):
         string='Competency Tags'
     )
 
-    # Internal Reference
-
-    @api.model
-    def create(self, vals):
-        """ If we didn't set Internal reference create it automatically
-        This works only if we crate product from product.template form
-        """
-        if not self._context.get('create_product_product', False):
-            if ('default_code' not in vals or not vals['default_code']):
-                IrSequenceModel = self.env['ir.sequence']
-                vals['default_code'] = IrSequenceModel.next_by_code('product.internal.reference')
-        return super(ProductTemplate, self).create(vals)
-
-
-    _sql_constraints = [
-        ('default_code_uniq', 'unique (default_code)', "Internal reference already exists!"),
-    ]
-
     # Quotations
 
     quotations_count = fields.Integer(
@@ -147,10 +129,16 @@ class ProductProduct(models.Model):
         """ If we didn't set Internal reference create it automatically
         This works only if we crate product from product.product form
         """
-        if not self._context.get('create_from_tmpl', False):
+        # if not self._context.get('create_from_tmpl', False):
+        if not vals.get('default_code', False):
             IrSequenceModel = self.env['ir.sequence']
             vals['default_code'] = IrSequenceModel.next_by_code('product.internal.reference')
         return super(ProductProduct, self).create(vals)
+
+
+    _sql_constraints = [
+        ('default_code_uniq', 'unique (default_code)', "Internal reference already exists!"),
+    ]
 
 
 class ProductAbstractTag(models.AbstractModel):

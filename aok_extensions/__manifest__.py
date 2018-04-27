@@ -16,7 +16,7 @@
     'version': "0.1",
     'author': 'Modoolar',
     'website': 'https://www.modoolar.com',
-    'depends': ['sale_management', 'purchase', 'stock'],
+    'depends': ['sale', 'sale_management', 'purchase', 'stock'],
     'description': """
     This is my first module created for odoo SH
 """,
