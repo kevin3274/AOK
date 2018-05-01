@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_project_project_form_inherit_aok_account" model="ir.ui.view">
+        <field name="name">project.project.form.inherit.aok.account</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="product_analytic_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_product_template_form_inherit_aok" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.aok</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <button name="toggle_active" position="before">
+                <button class="oe_stat_button"
+                       name="view_projects"
+                       icon="fa-building-o"
+                       type="object">
+                    <field name="project_count" widget="statinfo" string="Projects"/>
+                </button>
+            </button>
+        </field>
+    </record>
+
+</odoo>
