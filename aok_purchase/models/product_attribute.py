@@ -8,6 +8,7 @@ class AttributeChecklistCategory(models.Model):
 
     name = fields.Char(string='Name', translate=True)
     attribute_ids = fields.One2many('attributes.checklist', 'category_id', string='Attributes')
+    description = fields.Html(string='Description')
 
 
 class AttributeChecklist(models.Model):
@@ -23,4 +24,3 @@ class ProductAttributesChecklist(models.Model):
     name = fields.Many2one("attributes.checklist", string="Attribute Name")
     product_id = fields.Many2one('product.product', string='Product')
     value = fields.Char('Value')
-

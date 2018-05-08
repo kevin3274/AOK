@@ -7,14 +7,13 @@
         <field name="arch" type="xml">
             <form string="Attribute Checklist Category">
                 <group>
-                    <group>
-                        <field name="name"/>
-                        <field name="attribute_ids">
-                            <tree string="Attributes" editable="bottom">
-                                <field name="name"/>
-                            </tree>
-                        </field>
-                    </group>
+                    <field name="name"/>
+                    <field name="attribute_ids">
+                        <tree string="Attributes" editable="bottom">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                    <field name="description"/>
                 </group>
             </form>
         </field>

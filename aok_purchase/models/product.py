@@ -69,6 +69,7 @@ class ProductProduct(models.Model):
         if self.checklist_category_id:
             for attribute in self.checklist_category_id.attribute_ids:
                 ProductAttributesChecklist.create({'product_id': self.id, 'name': attribute.id})
+            self.write({'description': self.checklist_category_id.description})
 
     @api.onchange('checklist_category_id')
     def _onchange_checklist_category_id(self):
