@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="mrp_bom_structure_report_inherit_mrp_bom_stock" inherit_id="mrp.mrp_bom_structure_report" name="Bom structure report with kit quantity">
+        <xpath expr="//table/thead/tr/th[1]" position="after">
+            <th>Available Kit Qty.</th>
+        </xpath>
+        <xpath expr="//table/tbody/t/tr[1]/td" position="after">
+            <td>
+                <t t-set="product" t-value="o.product_id or o.product_tmpl_id.product_variant_id"/>
+                <span t-esc="'%.2f' % (product._get_kit_qty())"/>
+            </td>
+        </xpath>
+        <xpath expr="//table/tbody/t/tr[2]/td" position="after">
+            <td></td>
+        </xpath>
+    </template>
+
+</odoo>

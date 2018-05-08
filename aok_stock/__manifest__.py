@@ -8,7 +8,7 @@
     'summary': 'AOK Inventory',
     'description': "",
     'website': 'https://www.odoo.com/',
-    'depends': ['delivery', 'purchase', 'stock_picking_batch'],
+    'depends': ['delivery', 'purchase', 'stock_picking_batch', 'mrp'],
     'data': [
         'views/sale_views.xml',
         'views/stock_picking_views.xml',
@@ -16,6 +16,7 @@
         'views/stock_move_line_views.xml',
         'views/stock_location_views.xml',
         'report/report_stockpicking_operations.xml',
+        'views/report_bom_structure.xml',
     ],
     'test': [
     ],
