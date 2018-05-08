@@ -87,6 +87,7 @@
         <field name="inherit_id" ref="account_payment_order.account_payment_line_form"/>
         <field name="arch" type="xml">
             <field name="amount_currency" position="after">
+                <field name="discounted_amount"/>
                 <field name="payment_discount"/>
                 <field name="deduct_discount"/>
                 <field name="discount_due_date"/>

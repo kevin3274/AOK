@@ -116,11 +116,13 @@ class AccountPaymentLine(models.Model):
                 dates.append(discount.discount_due_date)
             line.payment_discount = sum
             line.discount_due_date = min(dates) if dates else False
+            line.discounted_amount = line.amount_currency - sum
 
     payment_line_discount_ids = fields.One2many('account.payment.line.discount', 'payment_line_id', string="Payment Order Line Discount")
     payment_discount = fields.Monetary(compute="_compute_all", string="Payment Discount", currency_field='currency_id')
     deduct_discount = fields.Boolean("Deduct Discount")
     discount_due_date = fields.Date(compute="_compute_all", string="Discount Due Date")
+    discounted_amount = fields.Monetary(compute="_compute_all", string="Discounted Amount", currency_field='currency_id')
 
 
 class AccountPaymentLineDiscount(models.Model):
@@ -172,7 +174,6 @@ class AccountPaymentOrder(models.Model):
     @api.multi
     def draft2open(self):
         AccountPaymentLineDiscount = self.env['account.payment.line.discount']
-        AccountInvoiceTax = self.env['account.invoice.tax']
         for order in self:
             for line in order.payment_line_ids:
                 if line.move_line_id:
