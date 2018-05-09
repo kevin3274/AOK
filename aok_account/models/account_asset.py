@@ -57,7 +57,10 @@ class AccountAssetAsset(models.Model):
                             amount = (residual_amount * self.method_progress_factor) / total_days * days
         last_month = self.env.user.company_id.fiscalyear_last_month
         depreciation_month = depreciation_date.month
-        amount = round(amount) if last_month == depreciation_month else amount
+        if last_month == depreciation_month:
+            remaining_amount = residual_amount - amount
+            remaining_amount = round(remaining_amount)
+            amount = residual_amount - remaining_amount
         return amount
 
 
