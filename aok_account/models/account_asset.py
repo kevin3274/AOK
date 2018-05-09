@@ -32,24 +32,19 @@ class AccountAssetAsset(models.Model):
         else:
             if self.method == 'linear':
                 amount = amount_to_depr / (undone_dotation_number - len(posted_depreciation_line_ids))
-                amount = round(amount) if self.is_full_amount else amount
                 if self.prorata:
                     amount = amount_to_depr / self.method_number
-                    amount = round(amount) if self.is_full_amount else amount
                     if sequence == 1:
                         if self.method_period % 12 != 0:
                             date = datetime.strptime(self.date, '%Y-%m-%d')
                             month_days = calendar.monthrange(date.year, date.month)[1]
                             days = month_days - date.day + 1
                             amount = (amount_to_depr / self.method_number) / month_days * days
-                            amount = round(amount) if self.is_full_amount else amount
                         else:
                             days = (self.company_id.compute_fiscalyear_dates(depreciation_date)['date_to'] - depreciation_date).days + 1
                             amount = (amount_to_depr / self.method_number) / total_days * days
-                            amount = round(amount) if self.is_full_amount else amount
             elif self.method == 'degressive':
                 amount = residual_amount * self.method_progress_factor
-                amount = round(amount) if self.is_full_amount else amount
                 if self.prorata:
                     if sequence == 1:
                         if self.method_period % 12 != 0:
@@ -57,11 +52,12 @@ class AccountAssetAsset(models.Model):
                             month_days = calendar.monthrange(date.year, date.month)[1]
                             days = month_days - date.day + 1
                             amount = (residual_amount * self.method_progress_factor) / month_days * days
-                            amount = round(amount) if self.is_full_amount else amount
                         else:
                             days = (self.company_id.compute_fiscalyear_dates(depreciation_date)['date_to'] - depreciation_date).days + 1
                             amount = (residual_amount * self.method_progress_factor) / total_days * days
-                            amount = round(amount) if self.is_full_amount else amount
+        last_month = self.env.user.company_id.fiscalyear_last_month
+        depreciation_month = depreciation_date.month
+        amount = round(amount) if last_month == depreciation_month else amount
         return amount
 
 
