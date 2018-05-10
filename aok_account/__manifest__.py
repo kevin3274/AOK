@@ -16,6 +16,7 @@
         'data/account_asset_sequence.xml',
         'views/account_asset_views.xml',
         'views/company_views.xml',
+        'wizard/account_asset_summary_report_view.xml',
     ],
     'test': [
     ],
