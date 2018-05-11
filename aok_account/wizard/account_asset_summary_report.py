@@ -34,19 +34,19 @@ class AssetSummaryReport(models.TransientModel):
             raise ValidationError(_('There are no record Found!'))
         accounts = records.mapped('category_id').mapped('account_asset_id')
 
-        fields = ['', 'Column 1', 'Column 2', 'Column 3', 'Column 4', 'Column 5', 'Column 6', 'Column 7', 'Column 8', 'Column 9']
+        fieldss = ['', 'Column 1', 'Column 2', 'Column 3', 'Column 4', 'Column 5', 'Column 6', 'Column 7', 'Column 8', 'Column 9']
 
         workbook = xlwt.Workbook()
         worksheet = workbook.add_sheet('Sheet 1')
         raw = 0
         base_style = xlwt.easyxf('align: wrap yes')
-        for field in fields:
+        for field in fieldss:
             worksheet.write(0, raw, field, base_style)
             raw += 1
         col = 1
         for account in accounts:
             raw = 0
-            for field in fields:
+            for field in fieldss:
                 if field == '':
                     worksheet.write(col, raw, account.name, base_style)
                 elif field == 'Column 1':
@@ -60,6 +60,14 @@ class AssetSummaryReport(models.TransientModel):
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Column 4':
                     worksheet.write(col, raw, 0.0, base_style)
+                elif field == 'Column 5':
+                    depreciation_lines = prev_records.filtered(lambda rec: rec.state == 'open').mapped('depreciation_line_ids')
+                    value = sum(depreciation_lines.filtered(lambda rec: rec.depreciation_date < self.date_from).mapped('amount'))
+                    worksheet.write(col, raw, value, base_style)
+                elif field == 'Column 6':
+                    depreciation_lines = records.filtered(lambda rec: rec.state == 'open').mapped('depreciation_line_ids')
+                    value = sum(depreciation_lines.filtered(lambda rec: fields.Datetime.from_string(rec.depreciation_date).month == self.env.user.company_id.fiscalyear_last_month).mapped('remaining_value')) - sum(records.mapped('value_residual'))
+                    worksheet.write(col, raw, value, base_style)
                 raw += 1
             col += 1
             fp = BytesIO()
