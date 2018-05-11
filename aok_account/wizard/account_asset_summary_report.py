@@ -22,13 +22,14 @@ class AssetSummaryReport(models.TransientModel):
     @api.constrains('date_to', 'date_from')
     def _check_dates(self):
         for record in self:
-            if record.date_from >= record.date_to:
-                raise ValidationError(_("'From Date' must be less than or equal to 'To Date !'"))
+            if record.date_from > record.date_to:
+                raise ValidationError(_("'From Date' must be less than or equal to 'To Date' !"))
 
     @api.multi
     def print_report(self):
         records = self.env['account.asset.asset'].search([('state', '!=', 'draft'), ('date', '>=', self.date_from),
                                                       ('date', '<=', self.date_to)])
+        prev_records = self.env['account.asset.asset'].search([('state', '!=', 'draft'), ('date', '<', self.date_from)])
         if not records:
             raise ValidationError(_('There are no record Found!'))
         accounts = records.mapped('category_id').mapped('account_asset_id')
@@ -48,7 +49,16 @@ class AssetSummaryReport(models.TransientModel):
             for field in fields:
                 if field == '':
                     worksheet.write(col, raw, account.name, base_style)
-                else:
+                elif field == 'Column 1':
+                    value = sum(prev_records.filtered(lambda rec: rec.state == 'open').mapped('value'))
+                    worksheet.write(col, raw, value, base_style)
+                elif field == 'Column 2':
+                    value = sum(records.filtered(lambda rec: rec.state == 'open').mapped('value'))
+                    worksheet.write(col, raw, value, base_style)
+                elif field == 'Column 3':
+                    value = sum(records.filtered(lambda rec: rec.state == 'close').mapped('depreciation_line_ids').mapped('amount'))
+                    worksheet.write(col, raw, value, base_style)
+                elif field == 'Column 4':
                     worksheet.write(col, raw, 0.0, base_style)
                 raw += 1
             col += 1
