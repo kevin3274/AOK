@@ -283,3 +283,15 @@ class AccountInvoice(models.Model):
     _inherit = "account.invoice"
 
     number = fields.Char(related='move_id.name', store=True, copy=False, readonly=False)
+
+
+class ProductCategory(models.Model):
+    _inherit = "product.category"
+
+    analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account', required=True)
+
+
+class ProductProduct(models.Model):
+    _inherit = "product.product"
+
+    analytic_tag_ids = fields.Many2many("account.analytic.tag", string="Analytic Tags")

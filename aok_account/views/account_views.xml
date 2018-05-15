@@ -112,4 +112,26 @@
         </field>
     </record>
 
+    <record id="view_product_category_form_inherit_aok" model="ir.ui.view">
+        <field name="name">product.category.form.inherit.aok</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="account.view_category_property_form"/>
+        <field name="arch" type="xml">
+            <field name="property_account_expense_categ_id" position="after">
+                <field name="analytic_account_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_product_product_form_inherit_aok" model="ir.ui.view">
+        <field name="name">product.product.form.inherit.aok</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <field name="categ_id" position="after">
+                <field name="analytic_tag_ids" widget="many2many_tags"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>
