@@ -101,4 +101,15 @@
         </field>
     </record>
 
+    <record id="view_account_invoice_supplier_form_inherit_aok" model="ir.ui.view">
+        <field name="name">account.invoice.supplier.form.inherit.aok</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <field name="number" position="replace">
+                <field name="number" class="oe_inline"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>
