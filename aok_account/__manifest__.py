@@ -12,7 +12,6 @@
     'data': [
         'views/account_views.xml',
         'views/partner_views.xml',
-        'views/project_views.xml',
         'data/account_asset_sequence.xml',
         'views/account_asset_views.xml',
         'views/company_views.xml',
