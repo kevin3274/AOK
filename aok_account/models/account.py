@@ -316,3 +316,14 @@ class PurchaseOrderLine(models.Model):
         result = super(PurchaseOrderLine, self).onchange_product_id()
         self.analytic_tag_ids = self.product_id.analytic_tag_ids
         return result
+
+
+class AccountInvoiceLine(models.Model):
+    _inherit = "account.invoice.line"
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        result = super(AccountInvoiceLine, self)._onchange_product_id()
+        self.analytic_tag_ids = self.product_id.analytic_tag_ids
+        self.account_analytic_id = self.product_id.categ_id.analytic_account_id
+        return result
