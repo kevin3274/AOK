@@ -38,12 +38,13 @@
                 <page name='attributes_checklist' string='Attributes Checklist'>
                     <group>
                         <button class="ml4 mt4 mb4" name="action_load_attribute_category" type="object" style="width: 200px !important;" icon="fa-files-o" string="Load attributes from category"/>
+                        <button class="ml4 mt4 mb4" name="add_to_description" type="object" style="width: 200px !important;" icon="fa-files-o" string="Add to description for vendors"/>
                     </group>
                     <group>
                         <group>
                             <field name="checklist_category_id"/>
                             <field name="checklist_ids">
-                                <tree string="Checklist Attributes" editable="bottom">
+                                <tree string="Checklist Attributes" editable="bottom" delete="false">
                                     <field name="name"/>
                                     <field name="value"/>
                                 </tree>

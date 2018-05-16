@@ -2,6 +2,7 @@
 
 from odoo import api, fields, models
 
+
 class ProductSupplierinfoFixedCosts(models.Model):
     _name = 'product.supplierinfo.fixed.costs'
     _rec_name = 'cost_category'
@@ -23,11 +24,11 @@ class ProductSupplierinfoVariableCosts(models.Model):
 class SupplierInfo(models.Model):
     _inherit = "product.supplierinfo"
 
-    @api.depends('min_qty','fix_cost_ids','variable_cost_ids','fix_cost_ids.amount','variable_cost_ids.amount')
+    @api.depends('min_qty', 'fix_cost_ids', 'variable_cost_ids', 'fix_cost_ids.amount', 'variable_cost_ids.amount')
     def _total_uom_amount(self):
         for record in self:
             min_qty = record.min_qty or 1.0
-            record.total_uom_amount =  record.price + (sum(record.fix_cost_ids.mapped('amount')) / min_qty) + sum(record.variable_cost_ids.mapped('amount'))
+            record.total_uom_amount = record.price + (sum(record.fix_cost_ids.mapped('amount')) / min_qty) + sum(record.variable_cost_ids.mapped('amount'))
 
     fix_cost_ids = fields.One2many('product.supplierinfo.fixed.costs', 'supplier_id', string='Fixed Cost', copy=True)
     variable_cost_ids = fields.One2many('product.supplierinfo.variable.costs', 'supplier_id', string='Variable Cost', copy=True)
@@ -70,6 +71,18 @@ class ProductProduct(models.Model):
             for attribute in self.checklist_category_id.attribute_ids:
                 ProductAttributesChecklist.create({'product_id': self.id, 'name': attribute.id})
             self.write({'description': self.checklist_category_id.description})
+
+    def add_to_description(self):
+        self.ensure_one()
+        description = ""
+        for checklist in self.checklist_ids:
+            description += checklist.name.name or ''
+            description += "\t\t\t"
+            description += checklist.value or ''
+            description += "\n"
+        description += "\n\n"
+        description += self.checklist_category_id.description or ''
+        self.write({'description_purchase': description})
 
     @api.onchange('checklist_category_id')
     def _onchange_checklist_category_id(self):
