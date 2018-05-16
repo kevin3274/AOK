@@ -66,3 +66,9 @@ class ProductProduct(models.Model):
         purchase_requisition_lines = self.env['purchase.requisition.line'].search([('product_id', '=', self.id), ('state', '=', 'open'),('type_id.show_remaining_quantity','=',True)])
         action['domain'] = [('id', 'in', purchase_requisition_lines.ids)]
         return action
+
+
+class PurchaseOrder(models.Model):
+    _inherit = "purchase.order"
+
+    user_id = fields.Many2one("res.users", string="Responsible", default=lambda self: self.env.user)

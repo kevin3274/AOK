@@ -120,4 +120,15 @@
         </field>
     </record>
 
+    <record id="view_purchase_order_form_inherit_aok_purchase" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.aok.purchase</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase_requisition.purchase_order_form_inherit"/>
+        <field name="arch" type="xml">
+            <field name="requisition_id" position="after">
+                <field name="user_id"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>
