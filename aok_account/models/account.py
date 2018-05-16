@@ -306,3 +306,13 @@ class SaleOrderLine(models.Model):
         result = super(SaleOrderLine, self).product_id_change()
         self.analytic_tag_ids = self.product_id.analytic_tag_ids
         return result
+
+
+class PurchaseOrderLine(models.Model):
+    _inherit = 'purchase.order.line'
+
+    @api.onchange('product_id')
+    def onchange_product_id(self):
+        result = super(PurchaseOrderLine, self).onchange_product_id()
+        self.analytic_tag_ids = self.product_id.analytic_tag_ids
+        return result
