@@ -107,7 +107,7 @@
         <field name="inherit_id" ref="account.invoice_supplier_form"/>
         <field name="arch" type="xml">
             <field name="number" position="replace">
-                <field name="number" class="oe_inline"/>
+                <field name="number" required="1" class="oe_inline"/>
             </field>
         </field>
     </record>

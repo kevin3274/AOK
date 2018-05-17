@@ -282,7 +282,8 @@ class AccountMove(models.Model):
 class AccountInvoice(models.Model):
     _inherit = "account.invoice"
 
-    number = fields.Char(related='move_id.name', store=True, copy=False, readonly=False)
+    number = fields.Char(related='move_id.name', store=True, copy=False,
+        readonly=True, states={'draft': [('readonly', False)]})
 
 
 class ProductCategory(models.Model):
