@@ -87,8 +87,8 @@
                 <field name="min_qty" readonly="1"/>
                 <field name="price" readonly="1" string="Price"/>
                 <field name="total_uom_amount"/>
-                <field name="sim_sales_price"/>
-                <field name="margin_per"/>
+                <field name="sim_sales_price" context="{'from_sales_price': True}"/>
+                <field name="margin_per" context="{'from_margin': True}"/>
                 <field name="margin"/>
                 <field name="date_start" readonly="1"/>
                 <field name="date_end" readonly="1"/>
