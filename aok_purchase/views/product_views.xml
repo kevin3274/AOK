@@ -37,7 +37,7 @@
             <page name='notes' position='after'>
                 <page name='attributes_checklist' string='Attributes Checklist'>
                     <group>
-                        <button class="ml4 mt4 mb4" name="action_load_attribute_category" type="object" style="width: 200px !important;" icon="fa-files-o" string="Load attributes from category"/>
+                        <button class="ml4 mt4 mb4" name="action_load_attribute_category" type="object" style="width: 200px !important;" icon="fa-files-o" string="Load attributes from category" context="{'from_button': True}"/>
                         <button class="ml4 mt4 mb4" name="add_to_description" type="object" style="width: 200px !important;" icon="fa-files-o" string="Add to description for vendors"/>
                     </group>
                     <group>

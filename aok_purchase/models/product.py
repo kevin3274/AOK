@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError
 
 
 class ProductSupplierinfoFixedCosts(models.Model):
@@ -91,10 +91,13 @@ class ProductProduct(models.Model):
     def _onchange_checklist_category_id(self):
         self.checklist_ids = False
 
-    @api.constrains('checklist_ids', 'checklist_ids.name', 'checklist_ids.value')
-    def _check_mandatory(self):
-        for record in self:
-            for attribute in record.checklist_ids:
-                if attribute.name and attribute.name.name and attribute.name.name[-1] == '*':
-                    if not attribute.value:
-                        raise ValidationError(_("Please fill the mandatory Checklist Attribute Value."))
+    @api.multi
+    def write(self, vals):
+        context = dict(self.env.context or {})
+        if not context.get('from_button'):
+            for record in self:
+                for attribute in record.checklist_ids:
+                    if attribute.name and attribute.name.name and attribute.name.name[-1] == '*':
+                        if not attribute.value:
+                            raise UserError(_("Please fill the mandatory Checklist Attribute Value."))
+        return super(ProductProduct, self).write(vals)
