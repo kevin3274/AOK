@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class ProductSupplierinfoFixedCosts(models.Model):
@@ -42,9 +43,9 @@ class SupplierInfo(models.Model):
         context = dict(self.env.context or {})
         if context.get('from_sales_price'):
             self.margin_per = ((self.sim_sales_price - self.total_uom_amount) / self.sim_sales_price or 1.0) * 100
-            self.margin = (self.sim_sales_price - self.total_uom_amount) * self.min_qty
         if context.get('from_margin'):
             self.sim_sales_price = self.total_uom_amount * (1 + (self.margin_per / 1 - self.margin_per))
+        self.margin = (self.sim_sales_price - self.total_uom_amount) * self.min_qty
 
 
 class ProductTemplate(models.Model):
@@ -89,3 +90,11 @@ class ProductProduct(models.Model):
     @api.onchange('checklist_category_id')
     def _onchange_checklist_category_id(self):
         self.checklist_ids = False
+
+    @api.constrains('checklist_ids', 'checklist_ids.name', 'checklist_ids.value')
+    def _check_mandatory(self):
+        for record in self:
+            for attribute in record.checklist_ids:
+                if attribute.name and attribute.name.name and attribute.name.name[-1] == '*':
+                    if not attribute.value:
+                        raise ValidationError(_("Please fill the mandatory Checklist Attribute Value."))
