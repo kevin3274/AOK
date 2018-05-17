@@ -18,7 +18,7 @@ class ProductProduct(models.Model):
     def _get_kit_qty(self):
         MrpBom = self.env['mrp.bom']
         bom = MrpBom._bom_find(product_tmpl=self.product_tmpl_id, product=self, company_id=self.company_id.id)
-        if bom and bom.type == "phantom":
+        if bom:
             products = {}
             for line in bom.bom_line_ids:
                 # Calculate product quantity based on uom
@@ -32,13 +32,19 @@ class ProductProduct(models.Model):
                 if line.product_id.id in products.keys():
                     products[line.product_id.id]['qty'] += qty
                 else:
-                    products.update({line.product_id.id: {'qty_available': line.product_id.virtual_available, 'qty': qty}})
+                    products.update({line.product_id.id: {'qty_available': line.product_id.virtual_available > 0.00 and line.product_id.virtual_available or 0.00, 'qty': qty}})
             possible_qty = []
             for p in products:
-                possible_qty.append(int(products[p]['qty_available'] / products[p]['qty']))
+                qty_to_add = int(products[p]['qty_available'] / products[p]['qty'])
+                if bom.type == 'normal':
+                    qty_to_add = qty_to_add + (self.virtual_available > 0.00 and self.virtual_available or 0.00)
+                possible_qty.append(qty_to_add)
             if possible_qty:
                 return min(possible_qty)
-        return 0.0
+            else:
+                return 0.00
+        else:
+            return 0.00
 
     @api.depends('stock_move_ids.product_qty', 'stock_move_ids.state')
     def _compute_quantities(self):
