@@ -10,43 +10,11 @@
 #
 ##############################################################################
 
-from odoo import models, fields, api
+from odoo import models, fields
 
 
-class SaleOrderBarcode(models.Model):
-    _name = 'sale.order.barcode'
-    _description = 'Sale Order Barcode'
-
-    name = fields.Char(
-        string='Barcode'
-    )
-
-    active = fields.Boolean(
-        string='Active'
-    )
-
-    order_ids = fields.One2many(
-        comodel_name='sale.order',
-        inverse_name='barcode_id',
-        string='Sale Orders'
-    )
-
-
-class SaleOrder(models.Model):
-    _inherit = 'sale.order'
-
-    subs_from = fields.Date(
-        string='Subs From'
-    )
-
-    subs_to = fields.Date(
-        string='Subs To'
-    )
-
-    barcode_id = fields.Many2one(
-        comodel_name='sale.order.barcode',
-        string='Barcode'
-    )
+class AccountInvoice(models.Model):
+    _inherit = 'account.invoice'
 
     contact_person_id = fields.Many2one(
         string='Contact Person',

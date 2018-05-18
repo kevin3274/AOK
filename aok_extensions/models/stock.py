@@ -12,6 +12,7 @@
 
 from odoo import models, fields, api
 
+
 class StockWarehouseOrderpoint(models.Model):
     _inherit = 'stock.warehouse.orderpoint'
 
@@ -20,18 +21,28 @@ class StockWarehouseOrderpoint(models.Model):
         compute='_calculate_actual_stock'
     )
 
+    check_point = fields.Float(
+        compute="_calculate_check_point"
+    )
+
     @api.multi
     def _calculate_actual_stock(self):
+        # TODO: We should definitely optimize this.
         StockLocationModel = self.env['stock.location']
-        query = "SELECT sum(quantity) FROM stock_quant WHERE location_id IN %s AND product_id = %s"
+        query = "SELECT sum(quantity) FROM stock_quant " \
+                "WHERE location_id IN %s AND product_id = %s"
 
         for record in self:
-            locations = StockLocationModel.search([('id', 'child_of', record.location_id.id)])
-            self.env.cr.execute(query, [tuple(locations.ids), record.product_id.id])
+            locations = StockLocationModel.search([
+                ('id', 'child_of', record.location_id.id)
+            ])
+            self.env.cr.execute(
+                query,
+                [tuple(locations.ids), record.product_id.id]
+            )
             record.actual_stock = self.env.cr.fetchall()[0][0]
 
-
-
-
-
-
+    @api.multi
+    def _calculate_check_point(self):
+        for record in self:
+            record.check_point = record.actual_stock - record.product_min_qty

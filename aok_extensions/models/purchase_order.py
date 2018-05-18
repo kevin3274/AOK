@@ -10,11 +10,23 @@
 #
 ##############################################################################
 
-from odoo import models, fields, api
+from odoo import models, api
 
 
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
+
+    @api.multi
+    def write(self, vals):
+
+        edited_lines = self._get_edited_lines(vals)
+
+        res = super(PurchaseOrder, self).write(vals)
+
+        for record in self:
+            record._notify_changed_dates(edited_lines)
+
+        return res
 
     @api.model
     def _get_edited_lines(self, vals):
@@ -69,18 +81,3 @@ class PurchaseOrder(models.Model):
             ).send_mail(self.id))
 
         return MailMailModel.browse(mails)
-
-    @api.multi
-    def write(self, vals):
-
-        edited_lines = self._get_edited_lines(vals)
-
-        res = super(PurchaseOrder, self).write(vals)
-
-        for record in self:
-            record._notify_changed_dates(edited_lines)
-
-        return res
-
-
-

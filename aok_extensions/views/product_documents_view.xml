@@ -68,10 +68,9 @@
 
     <record id="product_template_only_form_view_inherited_product_documents" model="ir.ui.view">
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
             <notebook position="inside">
-
                 <page name="internal_media" string="Internal Media">
                     <separator string="Various Information" for="url_attachment_ids"/>
                     <field name="url_attachment_ids"
@@ -96,12 +95,10 @@
 
                     </field>
 
-                    <separator string="Product Performance" for="product_performance"/>
+                     <separator string="Product Performance" for="product_performance"/>
                     <field name="product_performance" />
                 </page>
-
                 <page name="external_media" string="External Media">
-
                     <separator string="Shop Videos" for="ext_doc_video_ids"/>
                     <field name="ext_doc_video_ids"
                            context="{
@@ -132,6 +129,83 @@
                     <field name="ext_doc_documents_ids"
                            context="{
                                 'default_res_model': 'product.template',
+                                'default_res_id': active_id ,
+                                'default_type': 'url',
+                                'default_external_type': 'document',
+                                'form_view_ref': 'aok_extensions.view_attachment_form',
+                                'tree_view_ref': 'aok_extensions.view_attachment_tree'
+                            }">
+
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <record id="product_normal_only_form_view_inherited_product_documents" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page name="internal_media" string="Internal Media">
+                    <separator string="Various Information" for="url_attachment_prod_ids"/>
+                    <field name="url_attachment_prod_ids"
+                           context="{
+                                'default_res_model': 'product.product',
+                                'default_res_id': active_id ,
+                                'default_type': 'url',
+                                'form_view_ref': 'aok_extensions.view_attachment_form',
+                                'tree_view_ref': 'aok_extensions.view_attachment_tree'
+                            }">
+                    </field>
+
+                    <separator string="Various files" for="file_attachment_ids"/>
+                    <field name="file_attachment_prod_ids"
+                           context="{
+                                'default_res_model': 'product.product',
+                                'default_res_id': active_id ,
+                                'default_type': 'binary',
+                                'form_view_ref': 'aok_extensions.view_attachment_form',
+                                'tree_view_ref': 'aok_extensions.view_attachment_tree'
+                            }">
+
+                    </field>
+
+                    <separator string="Product Performance" for="product_prod_performance"/>
+                    <field name="product_prod_performance" />
+                </page>
+
+                <page name="external_media" string="External Media">
+                    <separator string="Shop Videos" for="ext_doc_video_prod_ids"/>
+                    <field name="ext_doc_video_prod_ids"
+                           context="{
+                                'default_res_model': 'product.product',
+                                'default_res_id': active_id ,
+                                'default_type': 'url',
+                                'default_external_type': 'video',
+                                'form_view_ref': 'aok_extensions.view_attachment_form',
+                                'tree_view_ref': 'aok_extensions.view_attachment_tree'
+                            }">
+
+                    </field>
+
+                    <separator string="Shop Photos" for="ext_doc_image_prod_ids"/>
+                    <field name="ext_doc_image_prod_ids"
+                           context="{
+                                'default_res_model': 'product.product',
+                                'default_res_id': active_id ,
+                                'default_type': 'url',
+                                'default_external_type': 'image',
+                                'form_view_ref': 'aok_extensions.view_attachment_form',
+                                'tree_view_ref': 'aok_extensions.view_attachment_tree'
+                            }">
+
+                    </field>
+
+                    <separator string="Shop Documents" for="ext_doc_documents_prod_ids"/>
+                    <field name="ext_doc_documents_prod_ids"
+                           context="{
+                                'default_res_model': 'product.product',
                                 'default_res_id': active_id ,
                                 'default_type': 'url',
                                 'default_external_type': 'document',

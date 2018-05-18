@@ -50,6 +50,10 @@ class ProductTemplate(models.Model):
         string='Product Performance'
     )
 
+    type = fields.Selection(
+        default='product'
+    )
+
     # General Information
 
     prev_product_id = fields.Many2one(
@@ -101,7 +105,9 @@ class ProductTemplate(models.Model):
 
     @api.multi
     def action_view_quotations(self):
-        """ Open Quotation List view with quotations which have specific product """
+        """ Open Quotation List view with quotations
+            which have specific product
+        """
         self.ensure_one()
 
         SaleOrderLineModel = self.env['sale.order.line']
@@ -121,8 +127,20 @@ class ProductTemplate(models.Model):
 
         return action
 
+
 class ProductProduct(models.Model):
     _inherit = 'product.product'
+
+    product_prod_performance = fields.Text(
+        string='Product Performance'
+    )
+
+    _sql_constraints = [
+        ('default_code_uniq', 'unique (default_code)',
+         "Internal reference already exists!"
+         ),
+    ]
+
 
     @api.model
     def create(self, vals):
@@ -131,14 +149,10 @@ class ProductProduct(models.Model):
         """
         # if not self._context.get('create_from_tmpl', False):
         if not vals.get('default_code', False):
-            IrSequenceModel = self.env['ir.sequence']
-            vals['default_code'] = IrSequenceModel.next_by_code('product.internal.reference')
+            vals['default_code'] = self.env['ir.sequence'].next_by_code(
+                'product.internal.reference'
+            )
         return super(ProductProduct, self).create(vals)
-
-
-    _sql_constraints = [
-        ('default_code_uniq', 'unique (default_code)', "Internal reference already exists!"),
-    ]
 
 
 class ProductAbstractTag(models.AbstractModel):
@@ -158,7 +172,8 @@ class ProductAbstractTag(models.AbstractModel):
 
     active = fields.Boolean(
         default=True,
-        help="The active field allows you to hide the category without removing it."
+        help="The active field allows you to hide "
+             "the category without removing it."
     )
 
 

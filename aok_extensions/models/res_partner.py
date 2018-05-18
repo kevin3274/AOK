@@ -51,5 +51,3 @@ class ResPartner(models.Model):
     _sql_constraints = [
         ('email_uniq', 'unique (email)', "Email address already exists!"),
     ]
-
-

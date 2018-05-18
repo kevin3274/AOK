@@ -10,7 +10,7 @@
 #
 ##############################################################################
 
-from odoo import models, fields, api
+from odoo import models, fields
 
 
 class IrAttachment(models.Model):
@@ -77,6 +77,66 @@ class ProductTemplate(models.Model):
     )
 
     ext_doc_documents_ids = fields.One2many(
+        comodel_name='ir.attachment',
+        inverse_name='res_id',
+        domain=[
+            ('res_model', '=', _inherit),
+            ('external_type', '=', 'document'),
+        ],
+        string='Shop Documents'
+    )
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    # Documents / Internal
+
+    file_attachment_prod_ids = fields.One2many(
+        comodel_name='ir.attachment',
+        inverse_name='res_id',
+        domain=[
+            ('res_model', '=', _inherit),
+            ('type', '=', 'binary'),
+            ('external_type', '=', False),
+        ],
+        string='Attachment'
+    )
+
+    url_attachment_prod_ids = fields.One2many(
+        comodel_name='ir.attachment',
+        inverse_name='res_id',
+        domain=[
+            ('res_model', '=', _inherit),
+            ('type', '=', 'url'),
+            ('external_type', '=', False),
+        ],
+        string='Attachment'
+    )
+
+    # Documents / External
+
+    ext_doc_image_prod_ids = fields.One2many(
+        comodel_name='ir.attachment',
+        inverse_name='res_id',
+        domain=[
+            ('res_model', '=', _inherit),
+            ('external_type', '=', 'image'),
+        ],
+        string='Shop Photos'
+    )
+
+    ext_doc_video_prod_ids = fields.One2many(
+        comodel_name='ir.attachment',
+        inverse_name='res_id',
+        domain=[
+            ('res_model', '=', _inherit),
+            ('external_type', '=', 'video'),
+        ],
+        string='Shop Videos'
+    )
+
+    ext_doc_documents_prod_ids = fields.One2many(
         comodel_name='ir.attachment',
         inverse_name='res_id',
         domain=[

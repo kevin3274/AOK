@@ -83,7 +83,7 @@
                 <field name="subs_to"/>
             </field>
             <field name="partner_shipping_id" position="after">
-                <field name="contact_person"/>
+                <field name="contact_person_id"/>
                 <field name="barcode_id"/>
             </field>
 
@@ -96,7 +96,7 @@
         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
         <field name="arch" type="xml">
             <field name="product_id" position="after">
-                <field name="contact_person"/>
+                <field name="contact_person_id"/>
                 <field name="barcode_id"/>
             </field>
         </field>
@@ -108,7 +108,7 @@
         <field name="inherit_id" ref="account.invoice_form"/>
         <field name="arch" type="xml">
             <field name="payment_term_id" position="before">
-                <field name="contact_person" />
+                <field name="contact_person_id" />
             </field>
         </field>
     </record>

@@ -35,4 +35,7 @@
     ],
     'demo': [
     ],
+    'qweb': [
+        'static/src/xml/activity.xml',
+    ],
 }

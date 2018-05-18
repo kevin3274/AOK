@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-17 09:25+0000\n"
-"PO-Revision-Date: 2018-04-17 09:25+0000\n"
+"POT-Creation-Date: 2018-05-18 12:43+0000\n"
+"PO-Revision-Date: 2018-05-18 12:43+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -139,14 +139,16 @@ msgstr "Lagerbestand"
 
 #. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_product_product_file_attachment_ids
+#: model:ir.model.fields,field_description:aok_extensions.field_product_product_file_attachment_prod_ids
 #: model:ir.model.fields,field_description:aok_extensions.field_product_product_url_attachment_ids
+#: model:ir.model.fields,field_description:aok_extensions.field_product_product_url_attachment_prod_ids
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_file_attachment_ids
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_url_attachment_ids
 msgid "Attachment"
 msgstr "Attachment"
 
 #. module: aok_extensions
-#: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_id_7267
+#: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_id_5463
 #: model:ir.model.fields,field_description:aok_extensions.field_sale_order_barcode_name
 #: model:ir.ui.view,arch_db:aok_extensions.view_order_barcode_form
 msgid "Barcode"
@@ -167,6 +169,11 @@ msgstr "CRM-ID"
 #: model:ir.ui.view,arch_db:aok_extensions.view_send_new_product_wizard_form
 msgid "Cancel"
 msgstr "Abbrechen"
+
+#. module: aok_extensions
+#: model:ir.model.fields,field_description:aok_extensions.field_stock_warehouse_orderpoint_check_point
+msgid "Check Point"
+msgstr "Meldepunkt"
 
 #. module: aok_extensions
 #: model:ir.actions.act_window,help:aok_extensions.action_product_template_tag_form
@@ -202,9 +209,9 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #. module: aok_extensions
-#: model:ir.model.fields,field_description:aok_extensions.field_account_invoice_contact_person
-#: model:ir.model.fields,field_description:aok_extensions.field_sale_order_contact_person
-msgid "Contact person"
+#: model:ir.model.fields,field_description:aok_extensions.field_account_invoice_contact_person_id
+#: model:ir.model.fields,field_description:aok_extensions.field_sale_order_contact_person_id
+msgid "Contact Person"
 msgstr "Ansprechpartner"
 
 #. module: aok_extensions
@@ -260,6 +267,7 @@ msgid "Encasing"
 msgstr "Encasing"
 
 #. module: aok_extensions
+#: model:ir.ui.view,arch_db:aok_extensions.product_normal_only_form_view_inherited_product_documents
 #: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_product_documents
 msgid "External Media"
 msgstr "Externe Medien"
@@ -298,14 +306,15 @@ msgid "Insurance Status"
 msgstr "Versichertenstatus"
 
 #. module: aok_extensions
+#: model:ir.ui.view,arch_db:aok_extensions.product_normal_only_form_view_inherited_product_documents
 #: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_product_documents
 msgid "Internal Media"
 msgstr "Interne Medien"
 
 #. module: aok_extensions
-#: sql_constraint:product.template:0
+#: sql_constraint:product.product:0
 msgid "Internal reference already exists!"
-msgstr "Interne Referenz existiert bereits!"
+msgstr "Internal reference already exists!"
 
 #. module: aok_extensions
 #: model:ir.model,name:aok_extensions.model_account_invoice
@@ -444,7 +453,9 @@ msgstr "Kernkompetenz"
 
 #. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_product_product_product_performance
+#: model:ir.model.fields,field_description:aok_extensions.field_product_product_product_prod_performance
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_product_performance
+#: model:ir.ui.view,arch_db:aok_extensions.product_normal_only_form_view_inherited_product_documents
 #: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_product_documents
 msgid "Product Performance"
 msgstr "Produktausführung"
@@ -570,21 +581,27 @@ msgstr "Versandliste(inactive)"
 
 #. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_product_product_ext_doc_documents_ids
+#: model:ir.model.fields,field_description:aok_extensions.field_product_product_ext_doc_documents_prod_ids
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_ext_doc_documents_ids
+#: model:ir.ui.view,arch_db:aok_extensions.product_normal_only_form_view_inherited_product_documents
 #: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_product_documents
 msgid "Shop Documents"
 msgstr "Shop Dokumente"
 
 #. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_product_product_ext_doc_image_ids
+#: model:ir.model.fields,field_description:aok_extensions.field_product_product_ext_doc_image_prod_ids
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_ext_doc_image_ids
+#: model:ir.ui.view,arch_db:aok_extensions.product_normal_only_form_view_inherited_product_documents
 #: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_product_documents
 msgid "Shop Photos"
 msgstr "Shop Photos"
 
 #. module: aok_extensions
 #: model:ir.model.fields,field_description:aok_extensions.field_product_product_ext_doc_video_ids
+#: model:ir.model.fields,field_description:aok_extensions.field_product_product_ext_doc_video_prod_ids
 #: model:ir.model.fields,field_description:aok_extensions.field_product_template_ext_doc_video_ids
+#: model:ir.ui.view,arch_db:aok_extensions.product_normal_only_form_view_inherited_product_documents
 #: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_product_documents
 msgid "Shop Videos"
 msgstr "Shop Videos"
@@ -637,11 +654,13 @@ msgid "Upload Date"
 msgstr "Upload Date"
 
 #. module: aok_extensions
+#: model:ir.ui.view,arch_db:aok_extensions.product_normal_only_form_view_inherited_product_documents
 #: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_product_documents
 msgid "Various Information"
 msgstr "Diverse Informationen / Link"
 
 #. module: aok_extensions
+#: model:ir.ui.view,arch_db:aok_extensions.product_normal_only_form_view_inherited_product_documents
 #: model:ir.ui.view,arch_db:aok_extensions.product_template_only_form_view_inherited_product_documents
 msgid "Various files"
 msgstr "Diverse Dateien"

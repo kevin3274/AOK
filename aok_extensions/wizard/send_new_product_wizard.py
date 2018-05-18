@@ -45,7 +45,7 @@ class SendNewProduct(models.TransientModel):
                 qty += line.product_uom_qty
 
             new_line = SaleOrderLineModel.create({
-                'product_id' : self.product_id.id,
+                'product_id': self.product_id.id,
                 'product_uom_qty': qty,
                 'order_id': order.id
             })
