@@ -36,7 +36,7 @@ class SupplierInfo(models.Model):
     total_uom_amount = fields.Monetary(string="Gesamtpreis/ME", compute='_total_uom_amount')
     sim_sales_price = fields.Float(string='Sim Sales Price')
     margin_per = fields.Float(string='Margin (%)')
-    margin = fields.Float(string='Margin (€)')
+    margin = fields.Float(compute="_compute_margin", string='Margin (€)')
 
     @api.onchange('sim_sales_price', 'total_uom_amount', 'margin_per')
     def _onchange_margin(self):
@@ -45,8 +45,10 @@ class SupplierInfo(models.Model):
             self.margin_per = ((self.sim_sales_price - self.total_uom_amount) / (self.total_uom_amount or 1.0)) * 100
         if context.get('from_margin'):
             self.sim_sales_price = self.total_uom_amount + self.total_uom_amount * (self.margin_per / 100)
-        self.margin = (self.sim_sales_price - self.total_uom_amount) * self.min_qty
 
+    def _compute_margin(self):
+        for record in self:
+            record.margin = (record.sim_sales_price - record.total_uom_amount) * record.min_qty
 
 class ProductTemplate(models.Model):
     _inherit = "product.template"
