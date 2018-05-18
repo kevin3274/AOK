@@ -42,7 +42,7 @@ class SupplierInfo(models.Model):
     def _onchange_margin(self):
         context = dict(self.env.context or {})
         if context.get('from_sales_price'):
-            self.margin_per = ((self.sim_sales_price - self.total_uom_amount) / self.total_uom_amount or 1.0) * 100
+            self.margin_per = ((self.sim_sales_price - self.total_uom_amount) / (self.total_uom_amount or 1.0)) * 100
         if context.get('from_margin'):
             self.sim_sales_price = self.total_uom_amount + self.total_uom_amount * (self.margin_per / 100)
         self.margin = (self.sim_sales_price - self.total_uom_amount) * self.min_qty
