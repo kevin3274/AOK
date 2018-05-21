@@ -272,9 +272,9 @@ class AccountMove(models.Model):
                     else:
                         raise UserError(_('Please define a sequence on the journal.'))
 
-                if new_name and invoice.type != 'in_invoice':
+                if new_name and invoice and invoice.type != 'in_invoice':
                     move.name = new_name
-                if new_name and invoice.type == 'in_invoice':
+                if new_name and invoice and invoice.type == 'in_invoice':
                     move.name = invoice.number
         return self.write({'state': 'posted'})
 
