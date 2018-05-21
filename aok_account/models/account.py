@@ -285,6 +285,12 @@ class AccountInvoice(models.Model):
     number = fields.Char(related='move_id.name', store=True, copy=False,
         readonly=True, states={'draft': [('readonly', False)]})
 
+    @api.model
+    def create(self, vals):
+        res = super(AccountInvoice, self).create(vals)
+        if vals.get('number'):
+            res.write({'number': vals.get('number')})
+        return res
 
 class ProductCategory(models.Model):
     _inherit = "product.category"
