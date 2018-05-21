@@ -11,6 +11,7 @@
                     <field name="attribute_ids">
                         <tree string="Attributes" editable="bottom">
                             <field name="name"/>
+                            <field name="require"/>
                         </tree>
                     </field>
                     <field name="description"/>

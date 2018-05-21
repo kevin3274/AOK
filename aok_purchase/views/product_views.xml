@@ -46,7 +46,8 @@
                             <field name="checklist_ids">
                                 <tree string="Checklist Attributes" editable="bottom" delete="false">
                                     <field name="name"/>
-                                    <field name="value"/>
+                                    <field name="value" attrs="{'required':[('require', '=', True)]}"/>
+                                    <field name="require" invisible="1"/>
                                 </tree>
                             </field>
                         </group>

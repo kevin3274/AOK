@@ -16,6 +16,7 @@ class AttributeChecklist(models.Model):
 
     name = fields.Char(string='Attribute Name', translate=True)
     category_id = fields.Many2one('attributes.checklist.category', string='Category')
+    require = fields.Boolean(string="Required")
 
 
 class ProductAttributesChecklist(models.Model):
@@ -24,3 +25,4 @@ class ProductAttributesChecklist(models.Model):
     name = fields.Many2one("attributes.checklist", string="Attribute Name")
     product_id = fields.Many2one('product.product', string='Product')
     value = fields.Char('Value')
+    require = fields.Boolean(string="Required")

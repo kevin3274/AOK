@@ -74,7 +74,7 @@ class ProductProduct(models.Model):
         ProductAttributesChecklist = self.env['product.attributes.checklist']
         if self.checklist_category_id:
             for attribute in self.checklist_category_id.attribute_ids:
-                ProductAttributesChecklist.create({'product_id': self.id, 'name': attribute.id})
+                ProductAttributesChecklist.create({'product_id': self.id, 'name': attribute.id, 'require': attribute.require})
             self.write({'description': self.checklist_category_id.description})
 
     def add_to_description(self):
@@ -99,7 +99,6 @@ class ProductProduct(models.Model):
         if not context.get('from_button'):
             for record in self:
                 for attribute in record.checklist_ids:
-                    if attribute.name and attribute.name.name and attribute.name.name[-1] == '*':
-                        if not attribute.value:
-                            raise UserError(_("Please fill the mandatory Checklist Attribute Value."))
+                    if attribute.require and not attribute.value:
+                        raise UserError(_("Please fill the mandatory Checklist Attribute Value."))
         return super(ProductProduct, self).write(vals)
