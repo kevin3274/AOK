@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class AttributeChecklistCategory(models.Model):
@@ -26,3 +27,9 @@ class ProductAttributesChecklist(models.Model):
     product_id = fields.Many2one('product.product', string='Product')
     value = fields.Char('Value')
     require = fields.Boolean(string="Required")
+
+    @api.constrains('require', 'value')
+    def check_mandatory(self):
+        for record in self:
+            if record.require and not record.value:
+                raise UserError(_("Please fill the mandatory Checklist Attribute Value."))
