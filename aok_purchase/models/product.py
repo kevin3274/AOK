@@ -78,7 +78,7 @@ class ProductProduct(models.Model):
             description += checklist.value or ''
             description += "\n"
         description += "\n\n"
-        description += html2text(self.checklist_category_id.description or '')
+        description += html2text(self.description or '')
         self.write({'description_purchase': description})
 
     @api.onchange('checklist_category_id')
