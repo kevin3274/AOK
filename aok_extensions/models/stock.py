@@ -22,27 +22,81 @@ class StockWarehouseOrderpoint(models.Model):
     )
 
     check_point = fields.Float(
-        compute="_calculate_check_point"
+        compute="_calculate_check_point",
+        search='_search_check_point'
     )
 
     @api.multi
     def _calculate_actual_stock(self):
-        # TODO: We should definitely optimize this.
-        StockLocationModel = self.env['stock.location']
-        query = "SELECT sum(quantity) FROM stock_quant " \
-                "WHERE location_id IN %s AND product_id = %s"
+        query = """
+            SELECT swo.id, qty.v FROM 
+            stock_warehouse_orderpoint swo, 
+            (
+                SELECT sum(quantity) as v, product_id, location_id 
+                FROM stock_quant
+                WHERE location_id IN %s AND product_id IN %s 
+                GROUP BY product_id, location_id
+            ) as qty
+            WHERE swo.location_id=qty.location_id and 
+                  swo.product_id = qty.product_id       
+
+        """
+
+        self.env.cr.execute(
+            query,
+            [tuple(self.mapped("location_id").ids),
+             tuple(self.mapped("product_id").ids)]
+        )
+
+        result = dict((r[0], r[1]) for r in self.env.cr.fetchall())
 
         for record in self:
-            locations = StockLocationModel.search([
-                ('id', 'child_of', record.location_id.id)
-            ])
-            self.env.cr.execute(
-                query,
-                [tuple(locations.ids), record.product_id.id]
-            )
-            record.actual_stock = self.env.cr.fetchall()[0][0]
+            record.actual_stock = result.get(record.id, 0)
 
     @api.multi
     def _calculate_check_point(self):
         for record in self:
             record.check_point = record.actual_stock - record.product_min_qty
+
+    @api.model
+    def _search_check_point(self, operator, value):
+
+        if operator not in ('=', '!=', '<', '<=', '>', '>=', 'in', 'not in'):
+            return []
+
+        if operator == 'in':
+            operator = '='
+        elif operator == 'not in':
+            operator = '!='
+
+        if not value:
+            value = 0
+
+            if operator == '=':
+                operator = '<='
+            elif operator == '!=':
+                operator = '>'
+
+        query = """
+        SELECT swo.id FROM 
+        stock_warehouse_orderpoint AS swo, 
+        (
+          SELECT sum(sq.quantity) AS v, sq.product_id, sq.location_id 
+          FROM stock_quant sq
+          GROUP BY sq.product_id, sq.location_id
+        ) AS qty
+        WHERE (
+          swo.location_id = qty.location_id AND
+          swo.product_id = qty.product_id AND
+          (qty.v - swo.product_min_qty) {operator} {value}) OR 
+          (
+            (swo.location_id,swo.product_id) NOT IN 
+            (SELECT location_id, product_id FROM stock_quant) AND 
+            -swo.product_min_qty {operator} {value}
+          ) 
+        """.format(operator=operator, value=value)
+
+        self.env.cr.execute(query)
+        ids = [r[0] for r in self.env.cr.fetchall()]
+
+        return [('id', 'in', ids)]
