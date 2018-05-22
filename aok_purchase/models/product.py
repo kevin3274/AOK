@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo import api, fields, models
+from html2text import html2text
 
 
 class ProductSupplierinfoFixedCosts(models.Model):
@@ -69,14 +69,6 @@ class ProductProduct(models.Model):
         ('teil-direktauslieferung', 'Teil-Direktauslieferung'),
         ('einlagerung', 'Einlagerung')], string='Delivery Strategy')
 
-    def action_load_attribute_category(self):
-        self.ensure_one()
-        ProductAttributesChecklist = self.env['product.attributes.checklist']
-        if self.checklist_category_id:
-            for attribute in self.checklist_category_id.attribute_ids:
-                ProductAttributesChecklist.create({'product_id': self.id, 'name': attribute.id, 'require': attribute.require})
-            self.write({'description': self.checklist_category_id.description})
-
     def add_to_description(self):
         self.ensure_one()
         description = ""
@@ -86,19 +78,15 @@ class ProductProduct(models.Model):
             description += checklist.value or ''
             description += "\n"
         description += "\n\n"
-        description += self.checklist_category_id.description or ''
+        description += html2text(self.description or '')
         self.write({'description_purchase': description})
 
     @api.onchange('checklist_category_id')
     def _onchange_checklist_category_id(self):
         self.checklist_ids = False
-
-    @api.multi
-    def write(self, vals):
-        context = dict(self.env.context or {})
-        if not context.get('from_button'):
-            for record in self:
-                for attribute in record.checklist_ids:
-                    if attribute.require and not attribute.value:
-                        raise UserError(_("Please fill the mandatory Checklist Attribute Value."))
-        return super(ProductProduct, self).write(vals)
+        if self.checklist_category_id:
+            vals = []
+            for attribute in self.checklist_category_id.attribute_ids:
+                vals.append({'product_id': self.id, 'name': attribute.id, 'require': attribute.require})
+            self.checklist_ids = vals
+            self.description = self.checklist_category_id.description
