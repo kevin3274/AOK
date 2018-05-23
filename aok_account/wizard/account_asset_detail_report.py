@@ -32,7 +32,8 @@ class AssetDetailReport(models.TransientModel):
         prev_records = self.env['account.asset.asset'].search([('state', '!=', 'draft'), ('date', '<', self.date_from)])
         if not records:
             raise ValidationError(_('There are no record Found!'))
-        accounts = records.mapped('category_id').mapped('account_asset_id')
+        # accounts = records.mapped('category_id').mapped('account_asset_id')
+        assets = records + prev_records
 
         fieldss = ['', 'Column 1', 'Column 2', 'Column 3', 'Column 4', 'Column 5', 'Column 6', 'Column 7', 'Column 8', 'Column 9']
 
@@ -44,16 +45,16 @@ class AssetDetailReport(models.TransientModel):
             worksheet.write(0, raw, field, base_style)
             raw += 1
         col = 1
-        for account in accounts:
+        for asset in assets:
             raw = 0
             for field in fieldss:
                 if field == '':
-                    worksheet.write(col, raw, account.name, base_style)
+                    worksheet.write(col, raw, asset.name, base_style)
                 elif field == 'Column 1':
-                    value = sum(prev_records.filtered(lambda rec: rec.state == 'open').mapped('value'))
+                    value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date < self.date_from).mapped('value'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Column 2':
-                    value = sum(records.filtered(lambda rec: rec.state == 'open').mapped('value'))
+                    value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('value'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Column 3':
                     value = sum(records.filtered(lambda rec: rec.state == 'close').mapped('depreciation_line_ids').mapped('amount'))
