@@ -27,7 +27,7 @@ class StockWarehouseOrderpoint(models.Model):
     )
 
     @api.multi
-    def _calculate_actual_stock(self):
+    def _calculate_stock_qty(self):
         query = """
             SELECT swo.id, qty.v FROM 
             stock_warehouse_orderpoint swo, 
@@ -44,19 +44,27 @@ class StockWarehouseOrderpoint(models.Model):
 
         self.env.cr.execute(
             query,
-            [tuple(self.mapped("location_id").ids),
-             tuple(self.mapped("product_id").ids)]
+            [
+                tuple(self.mapped("location_id").ids),
+                tuple(self.mapped("product_id").ids)
+            ]
         )
 
-        result = dict((r[0], r[1]) for r in self.env.cr.fetchall())
+        return dict((r[0], r[1]) for r in self.env.cr.fetchall())
+
+    @api.multi
+    def _calculate_actual_stock(self):
+        result = self._calculate_stock_qty()
 
         for record in self:
             record.actual_stock = result.get(record.id, 0)
 
     @api.multi
     def _calculate_check_point(self):
+        result = self._calculate_stock_qty()
+
         for record in self:
-            record.check_point = record.actual_stock - record.product_min_qty
+            record.check_point = result.get(record.id, 0) - record.product_min_qty
 
     @api.model
     def _search_check_point(self, operator, value):
