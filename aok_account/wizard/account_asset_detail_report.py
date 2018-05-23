@@ -66,15 +66,15 @@ class AssetDetailReport(models.TransientModel):
                     value = sum(depreciation_lines.filtered(lambda rec: rec.depreciation_date < self.date_from).mapped('amount'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Column 6':
-                    depreciation_lines = records.filtered(lambda rec: rec.state == 'open').mapped('depreciation_line_ids')
-                    value = sum(depreciation_lines.filtered(lambda rec: fields.Datetime.from_string(rec.depreciation_date).month == self.env.user.company_id.fiscalyear_last_month).mapped('remaining_value')) - sum(records.mapped('value_residual'))
+                    depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('depreciation_line_ids')
+                    value = sum(depreciation_lines.filtered(lambda rec: fields.Datetime.from_string(rec.depreciation_date).month == self.env.user.company_id.fiscalyear_last_month).mapped('remaining_value'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Column 7':
-                    depreciation_lines = prev_records.filtered(lambda rec: rec.state == 'open').mapped('depreciation_line_ids')
-                    value = sum(depreciation_lines.filtered(lambda rec: fields.Datetime.from_string(rec.depreciation_date).month == self.env.user.company_id.fiscalyear_last_month).mapped('remaining_value')) - sum(prev_records.mapped('value_residual'))
+                    depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date < self.date_from).mapped('depreciation_line_ids')
+                    value = sum(depreciation_lines.filtered(lambda rec: fields.Datetime.from_string(rec.depreciation_date).month == self.env.user.company_id.fiscalyear_last_month).mapped('remaining_value'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Column 8':
-                    value = sum(records.filtered(lambda rec: rec.state == 'open').mapped('depreciation_line_ids').mapped('amount'))
+                    value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('depreciation_line_ids').mapped('amount'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Column 9':
                     worksheet.write(col, raw, 0.0, base_style)
