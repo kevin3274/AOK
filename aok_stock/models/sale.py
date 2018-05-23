@@ -19,7 +19,7 @@ class SaleOrderLine(models.Model):
         if not self.product_id or not self.product_uom_qty or not self.product_uom:
             self.product_packaging = False
             return {}
-        if self.product_id.type == 'product':
+        if self.product_id.type != 'service':
             precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
             product = self.product_id.with_context(warehouse=self.order_id.warehouse_id.id)
             product_qty = self.product_uom._compute_quantity(self.product_uom_qty, self.product_id.uom_id)
