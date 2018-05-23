@@ -35,7 +35,7 @@ class AssetDetailReport(models.TransientModel):
         # accounts = records.mapped('category_id').mapped('account_asset_id')
         assets = records + prev_records
 
-        fieldss = ['', 'Column 1', 'Column 2', 'Column 3', 'Column 4', 'Column 5', 'Column 6', 'Column 7', 'Column 8', 'Column 9']
+        fieldss = ['', 'Gross Value', 'Gross Value if new asset this year', 'Sold or Disposed this year', 'Plus/minus transfers(always 0.00)', 'Depreciation since start still last year', 'Residual end of this year', 'Residual still last year', 'Depreciation this year', 'Depreciation this year(always 0.00)']
 
         workbook = xlwt.Workbook()
         worksheet = workbook.add_sheet('Sheet 1')
@@ -50,33 +50,33 @@ class AssetDetailReport(models.TransientModel):
             for field in fieldss:
                 if field == '':
                     worksheet.write(col, raw, asset.name, base_style)
-                elif field == 'Column 1':
+                elif field == 'Gross Value':
                     value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date < self.date_from).mapped('value'))
                     worksheet.write(col, raw, value, base_style)
-                elif field == 'Column 2':
+                elif field == 'Gross Value if new asset this year':
                     value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('value'))
                     worksheet.write(col, raw, value, base_style)
-                elif field == 'Column 3':
+                elif field == 'Sold or Disposed this year':
                     value = sum(asset.filtered(lambda rec: rec.state == 'close' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('depreciation_line_ids').mapped('amount'))
                     worksheet.write(col, raw, value, base_style)
-                elif field == 'Column 4':
+                elif field == 'Plus/minus transfers(always 0.00)':
                     worksheet.write(col, raw, 0.0, base_style)
-                elif field == 'Column 5':
+                elif field == 'Depreciation since start still last year':
                     depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date < self.date_from).mapped('depreciation_line_ids')
                     value = sum(depreciation_lines.filtered(lambda rec: rec.depreciation_date < self.date_from).mapped('amount'))
                     worksheet.write(col, raw, value, base_style)
-                elif field == 'Column 6':
+                elif field == 'Residual end of this year':
                     depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('depreciation_line_ids')
                     value = sum(depreciation_lines.filtered(lambda rec: fields.Datetime.from_string(rec.depreciation_date).month == self.env.user.company_id.fiscalyear_last_month).mapped('remaining_value'))
                     worksheet.write(col, raw, value, base_style)
-                elif field == 'Column 7':
+                elif field == 'Residual still last year':
                     depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date < self.date_from).mapped('depreciation_line_ids')
                     value = sum(depreciation_lines.filtered(lambda rec: fields.Datetime.from_string(rec.depreciation_date).month == self.env.user.company_id.fiscalyear_last_month).mapped('remaining_value'))
                     worksheet.write(col, raw, value, base_style)
-                elif field == 'Column 8':
+                elif field == 'Depreciation this year':
                     value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('depreciation_line_ids').mapped('amount'))
                     worksheet.write(col, raw, value, base_style)
-                elif field == 'Column 9':
+                elif field == 'Depreciation this year(always 0.00)':
                     worksheet.write(col, raw, 0.0, base_style)
                 raw += 1
             col += 1
