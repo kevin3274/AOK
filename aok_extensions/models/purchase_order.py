@@ -56,6 +56,9 @@ class PurchaseOrder(models.Model):
     def _notify_changed_dates(self, edited_lines):
         self.ensure_one()
 
+        if not self.origin:
+            return
+
         SaleOrderModel = self.env['sale.order']
         MailMailModel = self.env['mail.mail']
 
