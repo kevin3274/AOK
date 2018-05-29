@@ -15,25 +15,21 @@ class AssetDetailReport(models.TransientModel):
     _description = 'Asset Detail Report'
 
     name = fields.Char("File Name")
-    date_to = fields.Date(string='Date To', required=True, default=lambda *a: datetime.today())
-    date_from = fields.Date(string='Date From', required=True, default=lambda *a: datetime.today())
     data = fields.Binary('File', readonly=True)
-
-    @api.constrains('date_to', 'date_from')
-    def _check_dates(self):
-        for record in self:
-            if record.date_from > record.date_to:
-                raise ValidationError(_("'From Date' must be less than or equal to 'To Date' !"))
 
     @api.multi
     def print_report(self):
-        records = self.env['account.asset.asset'].search([('state', '!=', 'draft'), ('date', '>=', self.date_from),
-                                                      ('date', '<=', self.date_to)])
-        prev_records = self.env['account.asset.asset'].search([('state', '!=', 'draft'), ('date', '<', self.date_from)])
-        if not records:
+        res = self.env.user.company_id.compute_fiscalyear_dates(datetime.today())
+        date_from = fields.Datetime.to_string(res.get('date_from'))
+        date_to = fields.Datetime.to_string(res.get('date_to'))
+
+        records = self.env['account.asset.asset'].search([('state', '!=', 'draft'), ('date', '>=', date_from),
+                                                      ('date', '<=', date_to)])
+        prev_records = self.env['account.asset.asset'].search([('state', '!=', 'draft'), ('date', '<', date_from)])
+        assets = records + prev_records
+        if not assets:
             raise ValidationError(_('There are no record Found!'))
         # accounts = records.mapped('category_id').mapped('account_asset_id')
-        assets = records + prev_records
 
         fieldss = ['', 'Gross Value', 'Gross Value if new asset this year', 'Sold or Disposed this year', 'Plus/minus transfers(always 0.00)', 'Depreciation since start still last year', 'Residual end of this year', 'Residual still last year', 'Depreciation this year', 'Depreciation this year(always 0.00)']
 
@@ -51,30 +47,30 @@ class AssetDetailReport(models.TransientModel):
                 if field == '':
                     worksheet.write(col, raw, asset.name, base_style)
                 elif field == 'Gross Value':
-                    value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date < self.date_from).mapped('value'))
+                    value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date < date_from).mapped('value'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Gross Value if new asset this year':
-                    value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('value'))
+                    value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date >= date_from and rec.date <= date_to).mapped('value'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Sold or Disposed this year':
-                    value = sum(asset.filtered(lambda rec: rec.state == 'close' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('depreciation_line_ids').mapped('amount'))
+                    value = sum(asset.filtered(lambda rec: rec.state == 'close' and rec.date >= date_from and rec.date <= date_to).mapped('depreciation_line_ids').mapped('amount'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Plus/minus transfers(always 0.00)':
                     worksheet.write(col, raw, 0.0, base_style)
                 elif field == 'Depreciation since start still last year':
-                    depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date < self.date_from).mapped('depreciation_line_ids')
-                    value = sum(depreciation_lines.filtered(lambda rec: rec.depreciation_date < self.date_from).mapped('amount'))
+                    depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date < date_from).mapped('depreciation_line_ids')
+                    value = sum(depreciation_lines.filtered(lambda rec: rec.depreciation_date < date_from).mapped('amount'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Residual end of this year':
-                    depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('depreciation_line_ids')
+                    depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date >= date_from and rec.date <= date_to).mapped('depreciation_line_ids')
                     value = sum(depreciation_lines.filtered(lambda rec: fields.Datetime.from_string(rec.depreciation_date).month == self.env.user.company_id.fiscalyear_last_month).mapped('remaining_value'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Residual still last year':
-                    depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date < self.date_from).mapped('depreciation_line_ids')
+                    depreciation_lines = asset.filtered(lambda rec: rec.state == 'open' and rec.date < date_from).mapped('depreciation_line_ids')
                     value = sum(depreciation_lines.filtered(lambda rec: fields.Datetime.from_string(rec.depreciation_date).month == self.env.user.company_id.fiscalyear_last_month).mapped('remaining_value'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Depreciation this year':
-                    value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date >= self.date_from and rec.date <= self.date_to).mapped('depreciation_line_ids').mapped('amount'))
+                    value = sum(asset.filtered(lambda rec: rec.state == 'open' and rec.date >= date_from and rec.date <= date_to).mapped('depreciation_line_ids').mapped('amount'))
                     worksheet.write(col, raw, value, base_style)
                 elif field == 'Depreciation this year(always 0.00)':
                     worksheet.write(col, raw, 0.0, base_style)

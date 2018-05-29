@@ -6,10 +6,9 @@
         <field name="model">asset.detail.report</field>
         <field name="arch" type="xml">
         <form string="Asset Detail Report">
-            <group>
-                <field name="date_from"/>
-                <field name="date_to" />
-            </group>
+            <p class="oe_grey">
+                Print the Asset Detail Report.
+            </p>
             <footer>
                 <button name="print_report" string="Print" type="object" class="btn-primary print_report"/>
                 <button string="Cancel" special="cancel" class="btn-default"/>
