@@ -3,3 +3,4 @@
 
 from . import account_asset_summary_report
 from . import account_asset_detail_report
+from . import report_wizard

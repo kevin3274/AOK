@@ -17,6 +17,8 @@
         'views/company_views.xml',
         'wizard/account_asset_summary_report_view.xml',
         'wizard/account_asset_detail_report_view.xml',
+        'wizard/report_wizard.xml',
+        'views/menuitem_view.xml',
     ],
     'test': [
     ],
