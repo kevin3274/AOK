@@ -30,7 +30,8 @@ class AssetSummaryReport(models.TransientModel):
         records = self.env['account.asset.asset'].search([('state', '!=', 'draft'), ('date', '>=', self.date_from),
                                                       ('date', '<=', self.date_to)])
         prev_records = self.env['account.asset.asset'].search([('state', '!=', 'draft'), ('date', '<', self.date_from)])
-        if not records:
+        tot_records = records + prev_records
+        if not tot_records:
             raise ValidationError(_('There are no record Found!'))
         accounts = records.mapped('category_id').mapped('account_asset_id')
 
