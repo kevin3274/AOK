@@ -314,6 +314,11 @@ class SaleOrderLine(models.Model):
         self.analytic_tag_ids = self.product_id.analytic_tag_ids
         return result
 
+    @api.multi
+    def _prepare_invoice_line(self, qty):
+        res = super(SaleOrderLine, self)._prepare_invoice_line(qty)
+        res['account_analytic_id'] = self.product_id.categ_id.analytic_account_id.id
+        return res
 
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
@@ -322,6 +327,7 @@ class PurchaseOrderLine(models.Model):
     def onchange_product_id(self):
         result = super(PurchaseOrderLine, self).onchange_product_id()
         self.analytic_tag_ids = self.product_id.analytic_tag_ids
+        self.account_analytic_id = self.product_id.categ_id.analytic_account_id
         return result
 
 
